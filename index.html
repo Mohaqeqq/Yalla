@@ -1090,7 +1090,7 @@ function loadVideo() {
      We only change the video.
   */
 
-  player.cueVideoById(
+  player.loadVideoById(
     exercise.youtube
   );
 
@@ -1659,6 +1659,10 @@ function togglePause() {
 
     window.speechSynthesis.cancel();
 
+    if (youtubeReady && player) {
+      player.pauseVideo();
+    }
+
   }
 
   else {
@@ -1666,6 +1670,10 @@ function togglePause() {
 
     playPauseButton.textContent =
       "❚❚";
+
+    if (youtubeReady && player) {
+      player.playVideo();
+    }
 
   }
 
