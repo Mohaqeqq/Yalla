@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -62,7 +61,7 @@ body {
 
 
 /* =========================================================
-   ROADMAP
+   SIDEBAR
 ========================================================= */
 
 .sidebar {
@@ -127,7 +126,7 @@ body {
 
 
 /* =========================================================
-   ITEM TOP
+   ITEM
 ========================================================= */
 
 .exercise-top {
@@ -150,6 +149,29 @@ body {
 
 .exercise-name {
     flex: 1;
+}
+
+
+/* =========================================================
+   BLOCK LABEL
+========================================================= */
+
+.block-label {
+
+    margin:
+        18px
+        8px
+        7px;
+
+    color: #444;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+
+    text-transform: uppercase;
 }
 
 
@@ -283,12 +305,6 @@ body {
 }
 
 
-/*
-   The YouTube iframe is created here.
-
-   It NEVER opens another page.
-*/
-
 #youtubePlayer {
 
     position: absolute;
@@ -330,6 +346,28 @@ body {
 
 .video-placeholder.hidden {
     display: none;
+}
+
+
+/* =========================================================
+   PLAYER STATUS
+========================================================= */
+
+.player-status {
+
+    width: 100%;
+
+    max-width: 760px;
+
+    height: 18px;
+
+    margin-top: 8px;
+
+    text-align: right;
+
+    color: #444;
+
+    font-size: 10px;
 }
 
 
@@ -429,28 +467,6 @@ body {
 
 
 /* =========================================================
-   SMALL PLAYER STATUS
-========================================================= */
-
-.player-status {
-
-    width: 100%;
-
-    max-width: 760px;
-
-    height: 18px;
-
-    margin-top: 8px;
-
-    text-align: right;
-
-    color: #444;
-
-    font-size: 10px;
-}
-
-
-/* =========================================================
    MOBILE
 ========================================================= */
 
@@ -537,34 +553,21 @@ body {
 <main class="main">
 
 
-    <!-- CURRENT EXERCISE -->
-
     <div id="exercise">
         Press Play
     </div>
 
-
-    <!-- SOURCE -->
 
     <div id="source">
         DAREBEE Exercise Library
     </div>
 
 
-    <!-- =====================================================
-         YOUTUBE PLAYER
-
-         ONE PLAYER ONLY.
-         IT NEVER OPENS A NEW PAGE.
-    ====================================================== -->
-
     <div class="video-wrapper">
 
         <div class="video-frame">
 
-            <div
-                id="youtubePlayer">
-            </div>
+            <div id="youtubePlayer"></div>
 
             <div
                 id="videoPlaceholder"
@@ -579,8 +582,6 @@ body {
     </div>
 
 
-    <!-- PLAYER STATUS -->
-
     <div
         id="playerStatus"
         class="player-status">
@@ -590,55 +591,42 @@ body {
     </div>
 
 
-    <!-- TIMER -->
-
     <div id="time">
         00:00
     </div>
 
 
-    <!-- TOTAL -->
-
     <div id="totalLabel">
         TOTAL ELAPSED
     </div>
+
 
     <div id="totalTime">
         00:00
     </div>
 
 
-    <!-- CONTROLS -->
-
     <div class="controls">
 
         <button
             id="playPauseButton"
             onclick="togglePause()">
-
             ▶
-
         </button>
 
         <button
             onclick="previousMove()">
-
             ‹
-
         </button>
 
         <button
             onclick="skipMove()">
-
             ›
-
         </button>
 
         <button
             onclick="resetTimer()">
-
             ↻
-
         </button>
 
     </div>
@@ -649,304 +637,444 @@ body {
 </div>
 
 
-
 <!-- =========================================================
-     YOUTUBE IFRAME API
+     YOUTUBE API
 ========================================================= -->
 
-<script
-    src="https://www.youtube.com/iframe_api">
-</script>
+<script src="https://www.youtube.com/iframe_api"></script>
 
 
 <script>
 
 /* =========================================================
-   DAREBEE SOURCE
+   IMPORTANT
 =========================================================
 
-   This is the DAREBEE Exercise Library playlist.
+   Every exercise has its OWN videoId.
 
-   IMPORTANT:
+   DO NOT use playlist indexes.
 
-   We do NOT put fake video IDs into the database.
-
-   The YouTube player loads the actual playlist and
-   selects the requested item.
+   Replace VIDEO_ID_HERE with the ACTUAL YouTube ID
+   belonging to the corresponding DAREBEE exercise.
 
 ========================================================= */
 
-const DAREBEE_PLAYLIST =
-    "PLQSMS0J6JbrKdSOSbyJXaQ_zN_HSSp7zZ";
-
 
 /* =========================================================
-   EXERCISE DATABASE
+   WORKOUT
 =========================================================
 
-   playlistIndex = position inside the DAREBEE
-   Exercise Library playlist.
+   TOTAL TARGET:
 
-   IMPORTANT:
-   These are playlist positions, NOT video IDs.
+   Warm-up              ~5 min
+   Upper chest           ~8 min
+   Core                  ~8 min
+   Back                  ~5 min
+   Animal locomotion    ~10 min
+   Shoulder/spine        ~8 min
+   Cool-down             ~4 min
 
-   This keeps the data separate from the player.
+   HARD RULE:
+
+   NO work interval exceeds 45 seconds.
 
 ========================================================= */
 
 const routine = [
 
-    {
-        name: "March in Place with Arm Swing",
-        work: 60,
-        rest: 10,
-        playlistIndex: 0
-    },
+/* =========================================================
+   WARM-UP
+========================================================= */
 
-    {
-        name: "Lateral Step with Arm Sweep",
-        work: 45,
-        rest: 10,
-        playlistIndex: 1
-    },
+{
+    block: "Warm-up",
+    name: "March in Place",
+    work: 40,
+    rest: 10,
+    videoId: "VIDEO_ID_HERE"
+},
 
-    {
-        name: "Inchworm Walkout",
-        work: 45,
-        rest: 15,
-        playlistIndex: 2
-    },
+{
+    block: "Warm-up",
+    name: "Arm Circles",
+    work: 40,
+    rest: 10,
+    videoId: "VIDEO_ID_HERE"
+},
 
-    {
-        name: "World's Greatest Stretch",
-        work: 45,
-        rest: 10,
-        playlistIndex: 3
-    },
+{
+    block: "Warm-up",
+    name: "Chest Expansions",
+    work: 40,
+    rest: 10,
+    videoId: "VIDEO_ID_HERE"
+},
 
-    {
-        name: "Standing Thoracic Rotation",
-        work: 45,
-        rest: 10,
-        playlistIndex: 4
-    },
+{
+    block: "Warm-up",
+    name: "Standing Torso Rotation",
+    work: 40,
+    rest: 10,
+    videoId: "VIDEO_ID_HERE"
+},
 
-    {
-        name: "Wall Slide with Lift-Off",
-        work: 45,
-        rest: 10,
-        playlistIndex: 5
-    },
+{
+    block: "Warm-up",
+    name: "Bird Dog",
+    work: 40,
+    rest: 20,
+    videoId: "VIDEO_ID_HERE"
+},
 
-    {
-        name: "Scapular Push-Up",
-        work: 40,
-        rest: 15,
-        playlistIndex: 6
-    },
+{
+    block: "Warm-up",
+    name: "Scapular Push-Up",
+    work: 40,
+    rest: 20,
+    videoId: "VIDEO_ID_HERE"
+},
 
-    {
-        name: "Bird Dog",
-        work: 40,
-        rest: 15,
-        playlistIndex: 7
-    },
 
-    {
-        name: "Beast to Crab Transition",
-        work: 45,
-        rest: 15,
-        playlistIndex: 8
-    },
+/* =========================================================
+   UPPER CHEST
+========================================================= */
 
-    {
-        name: "Beast to Crab Transition",
-        work: 45,
-        rest: 15,
-        playlistIndex: 9
-    },
+{
+    block: "Upper Chest",
+    name: "Push-Up",
+    work: 40,
+    rest: 25,
+    videoId: "VIDEO_ID_HERE"
+},
 
-    {
-        name: "Beast to Crab Transition",
-        work: 45,
-        rest: 20,
-        playlistIndex: 10
-    },
+{
+    block: "Upper Chest",
+    name: "Wide Push-Up",
+    work: 40,
+    rest: 25,
+    videoId: "VIDEO_ID_HERE"
+},
 
-    {
-        name: "Crab Kick-Through",
-        work: 45,
-        rest: 15,
-        playlistIndex: 11
-    },
+{
+    block: "Upper Chest",
+    name: "Push-Up to Downward Dog",
+    work: 40,
+    rest: 30,
+    videoId: "VIDEO_ID_HERE"
+},
 
-    {
-        name: "Crab Kick-Through",
-        work: 45,
-        rest: 15,
-        playlistIndex: 12
-    },
+{
+    block: "Upper Chest",
+    name: "Push-Up",
+    work: 40,
+    rest: 25,
+    videoId: "VIDEO_ID_HERE"
+},
 
-    {
-        name: "Crab Kick-Through",
-        work: 45,
-        rest: 20,
-        playlistIndex: 13
-    },
+{
+    block: "Upper Chest",
+    name: "Wide Push-Up",
+    work: 40,
+    rest: 25,
+    videoId: "VIDEO_ID_HERE"
+},
 
-    {
-        name: "Push-Up to T-Rotation",
-        work: 40,
-        rest: 15,
-        playlistIndex: 14
-    },
+{
+    block: "Upper Chest",
+    name: "Push-Up to Downward Dog",
+    work: 40,
+    rest: 0,
+    videoId: "VIDEO_ID_HERE"
+},
 
-    {
-        name: "Push-Up to Knee Drive",
-        work: 40,
-        rest: 15,
-        playlistIndex: 15
-    },
 
-    {
-        name: "Push-Up to Downward Dog",
-        work: 40,
-        rest: 20,
-        playlistIndex: 16
-    },
+/* =========================================================
+   CORE
+========================================================= */
 
-    {
-        name: "Bear Crawl to Lateral Reach",
-        work: 45,
-        rest: 15,
-        playlistIndex: 17
-    },
+{
+    block: "Core",
+    name: "Dead Bug",
+    work: 40,
+    rest: 20,
+    videoId: "VIDEO_ID_HERE"
+},
 
-    {
-        name: "Bear Crawl to Lateral Reach",
-        work: 45,
-        rest: 15,
-        playlistIndex: 18
-    },
+{
+    block: "Core",
+    name: "Plank",
+    work: 40,
+    rest: 20,
+    videoId: "VIDEO_ID_HERE"
+},
 
-    {
-        name: "Bear Crawl to Lateral Reach",
-        work: 45,
-        rest: 20,
-        playlistIndex: 19
-    },
+{
+    block: "Core",
+    name: "Sitting Twists",
+    work: 40,
+    rest: 20,
+    videoId: "VIDEO_ID_HERE"
+},
 
-    {
-        name: "Bear Crawl to Thoracic Rotation",
-        work: 45,
-        rest: 15,
-        playlistIndex: 20
-    },
+{
+    block: "Core",
+    name: "Reverse Crunch",
+    work: 40,
+    rest: 20,
+    videoId: "VIDEO_ID_HERE"
+},
 
-    {
-        name: "Plank to Frogger",
-        work: 45,
-        rest: 15,
-        playlistIndex: 21
-    },
+{
+    block: "Core",
+    name: "Side Plank",
+    work: 30,
+    rest: 15,
+    videoId: "VIDEO_ID_HERE"
+},
 
-    {
-        name: "Prone Superman Pull-Down",
-        work: 40,
-        rest: 20,
-        playlistIndex: 22
-    },
+{
+    block: "Core",
+    name: "Side Plank",
+    work: 30,
+    rest: 20,
+    videoId: "VIDEO_ID_HERE"
+},
 
-    {
-        name: "Dead Bug",
-        work: 45,
-        rest: 15,
-        playlistIndex: 23
-    },
+{
+    block: "Core",
+    name: "Dead Bug",
+    work: 40,
+    rest: 0,
+    videoId: "VIDEO_ID_HERE"
+},
 
-    {
-        name: "Side Plank Thread the Needle — Left",
-        work: 30,
-        rest: 10,
-        playlistIndex: 24
-    },
 
-    {
-        name: "Side Plank Thread the Needle — Right",
-        work: 30,
-        rest: 15,
-        playlistIndex: 25
-    },
+/* =========================================================
+   BACK
+========================================================= */
 
-    {
-        name: "Hollow Body Alternating Toe Tap",
-        work: 40,
-        rest: 15,
-        playlistIndex: 26
-    },
+{
+    block: "Back",
+    name: "Reverse Angels",
+    work: 40,
+    rest: 20,
+    videoId: "VIDEO_ID_HERE"
+},
 
-    {
-        name: "Reverse Crunch with Reach",
-        work: 40,
-        rest: 15,
-        playlistIndex: 27
-    },
+{
+    block: "Back",
+    name: "W Extensions",
+    work: 40,
+    rest: 20,
+    videoId: "VIDEO_ID_HERE"
+},
 
-    {
-        name: "Cross-Body Mountain Climber",
-        work: 40,
-        rest: 20,
-        playlistIndex: 28
-    },
+{
+    block: "Back",
+    name: "Back Extensions",
+    work: 40,
+    rest: 20,
+    videoId: "VIDEO_ID_HERE"
+},
 
-    {
-        name: "Child's Pose with Alternating Side Reach",
-        work: 45,
-        rest: 10,
-        playlistIndex: 29
-    },
+{
+    block: "Back",
+    name: "Reverse Angels",
+    work: 40,
+    rest: 0,
+    videoId: "VIDEO_ID_HERE"
+},
 
-    {
-        name: "Doorway Chest Stretch",
-        work: 45,
-        rest: 10,
-        playlistIndex: 30
-    },
 
-    {
-        name: "Cross-Body Shoulder Stretch",
-        work: 45,
-        rest: 10,
-        playlistIndex: 31
-    },
+/* =========================================================
+   ANIMAL FLOW
+========================================================= */
 
-    {
-        name: "Half-Kneeling Thoracic Rotation — Left",
-        work: 30,
-        rest: 10,
-        playlistIndex: 32
-    },
+{
+    block: "Animal Flow",
+    name: "Beast",
+    work: 40,
+    rest: 20,
+    videoId: "VIDEO_ID_HERE"
+},
 
-    {
-        name: "Half-Kneeling Thoracic Rotation — Right",
-        work: 30,
-        rest: 10,
-        playlistIndex: 33
-    },
+{
+    block: "Animal Flow",
+    name: "Crab",
+    work: 40,
+    rest: 20,
+    videoId: "VIDEO_ID_HERE"
+},
 
-    {
-        name: "90/90 Hip Stretch — Left",
-        work: 30,
-        rest: 10,
-        playlistIndex: 34
-    },
+{
+    block: "Animal Flow",
+    name: "Crab Kick-Through",
+    work: 40,
+    rest: 25,
+    videoId: "VIDEO_ID_HERE"
+},
 
-    {
-        name: "90/90 Hip Stretch — Right",
-        work: 30,
-        rest: 10,
-        playlistIndex: 35
-    }
+{
+    block: "Animal Flow",
+    name: "Crab Kick-Through",
+    work: 40,
+    rest: 25,
+    videoId: "VIDEO_ID_HERE"
+},
+
+{
+    block: "Animal Flow",
+    name: "Beast to Crab",
+    work: 40,
+    rest: 25,
+    videoId: "VIDEO_ID_HERE"
+},
+
+{
+    block: "Animal Flow",
+    name: "Beast to Crab",
+    work: 40,
+    rest: 25,
+    videoId: "VIDEO_ID_HERE"
+},
+
+{
+    block: "Animal Flow",
+    name: "Underswitch",
+    work: 40,
+    rest: 25,
+    videoId: "VIDEO_ID_HERE"
+},
+
+{
+    block: "Animal Flow",
+    name: "Underswitch",
+    work: 40,
+    rest: 25,
+    videoId: "VIDEO_ID_HERE"
+},
+
+{
+    block: "Animal Flow",
+    name: "Beast to Crab to Kick-Through",
+    work: 40,
+    rest: 25,
+    videoId: "VIDEO_ID_HERE"
+},
+
+{
+    block: "Animal Flow",
+    name: "Beast to Crab to Kick-Through",
+    work: 40,
+    rest: 0,
+    videoId: "VIDEO_ID_HERE"
+},
+
+
+/* =========================================================
+   SHOULDER + SPINE MOBILITY
+========================================================= */
+
+{
+    block: "Shoulder & Spine Mobility",
+    name: "Shoulder Circles",
+    work: 40,
+    rest: 10,
+    videoId: "VIDEO_ID_HERE"
+},
+
+{
+    block: "Shoulder & Spine Mobility",
+    name: "Standing Thoracic Rotation",
+    work: 40,
+    rest: 10,
+    videoId: "VIDEO_ID_HERE"
+},
+
+{
+    block: "Shoulder & Spine Mobility",
+    name: "Cross-Body Shoulder Stretch",
+    work: 40,
+    rest: 10,
+    videoId: "VIDEO_ID_HERE"
+},
+
+{
+    block: "Shoulder & Spine Mobility",
+    name: "Cat Cow",
+    work: 40,
+    rest: 10,
+    videoId: "VIDEO_ID_HERE"
+},
+
+{
+    block: "Shoulder & Spine Mobility",
+    name: "Child's Pose",
+    work: 40,
+    rest: 10,
+    videoId: "VIDEO_ID_HERE"
+},
+
+{
+    block: "Shoulder & Spine Mobility",
+    name: "Thoracic Rotation",
+    work: 40,
+    rest: 10,
+    videoId: "VIDEO_ID_HERE"
+},
+
+{
+    block: "Shoulder & Spine Mobility",
+    name: "Shoulder Stretch",
+    work: 40,
+    rest: 10,
+    videoId: "VIDEO_ID_HERE"
+},
+
+{
+    block: "Shoulder & Spine Mobility",
+    name: "Spinal Stretch",
+    work: 40,
+    rest: 0,
+    videoId: "VIDEO_ID_HERE"
+},
+
+
+/* =========================================================
+   COOL DOWN
+========================================================= */
+
+{
+    block: "Cool-down",
+    name: "Child's Pose",
+    work: 40,
+    rest: 10,
+    videoId: "VIDEO_ID_HERE"
+},
+
+{
+    block: "Cool-down",
+    name: "Chest Stretch",
+    work: 40,
+    rest: 10,
+    videoId: "VIDEO_ID_HERE"
+},
+
+{
+    block: "Cool-down",
+    name: "Shoulder Stretch",
+    work: 40,
+    rest: 10,
+    videoId: "VIDEO_ID_HERE"
+},
+
+{
+    block: "Cool-down",
+    name: "Spinal Stretch",
+    work: 40,
+    rest: 0,
+    videoId: "VIDEO_ID_HERE"
+}
 
 ];
 
@@ -1004,7 +1132,7 @@ const playerStatus =
 
 
 /* =========================================================
-   YOUTUBE API READY
+   YOUTUBE API
 ========================================================= */
 
 function onYouTubeIframeAPIReady() {
@@ -1013,20 +1141,11 @@ function onYouTubeIframeAPIReady() {
         "youtubePlayer",
         {
 
-            /*
-               IMPORTANT:
+            width: "100%",
 
-               We initialize the player with the
-               DAREBEE playlist itself.
-
-               No fake video ID.
-            */
+            height: "100%",
 
             playerVars: {
-
-                listType: "playlist",
-
-                list: DAREBEE_PLAYLIST,
 
                 playsinline: 1,
 
@@ -1048,9 +1167,7 @@ function onYouTubeIframeAPIReady() {
 
                 onError:
                     onPlayerError
-
             }
-
         }
     );
 }
@@ -1069,11 +1186,7 @@ function onPlayerReady() {
     );
 
     playerStatus.textContent =
-        "DAREBEE Exercise Library";
-
-    /*
-       Select the first exercise.
-    */
+        "DAREBEE • ready";
 
     loadExerciseVideo(
         currentIndex,
@@ -1088,10 +1201,6 @@ function onPlayerReady() {
 
 function onPlayerStateChange(event) {
 
-    /*
-       YouTube is playing.
-    */
-
     if (
         event.data === YT.PlayerState.PLAYING
     ) {
@@ -1100,11 +1209,6 @@ function onPlayerStateChange(event) {
             "DAREBEE • playing";
 
     }
-
-
-    /*
-       Paused.
-    */
 
     else if (
         event.data === YT.PlayerState.PAUSED
@@ -1115,20 +1219,13 @@ function onPlayerStateChange(event) {
 
     }
 
-
-    /*
-       Ended.
-    */
-
     else if (
         event.data === YT.PlayerState.ENDED
     ) {
 
         playerStatus.textContent =
             "DAREBEE • video ended";
-
     }
-
 }
 
 
@@ -1149,18 +1246,7 @@ function onPlayerError(event) {
 
 
 /* =========================================================
-   LOAD EXERCISE VIDEO
-=========================================================
-
-   THIS IS THE IMPORTANT PART.
-
-   We use:
-
-       loadPlaylist()
-
-   rather than pretending a playlist index is
-   a video ID.
-
+   LOAD EXACT VIDEO
 ========================================================= */
 
 function loadExerciseVideo(
@@ -1175,6 +1261,7 @@ function loadExerciseVideo(
         return;
     }
 
+
     const exercise =
         routine[index];
 
@@ -1184,54 +1271,79 @@ function loadExerciseVideo(
 
 
     /*
-       Tell the existing player to load the
-       DAREBEE playlist and select the desired item.
+       NEVER load a fake ID.
     */
 
-    player.loadPlaylist({
+    if (
+        !exercise.videoId ||
+        exercise.videoId === "VIDEO_ID_HERE"
+    ) {
 
-        listType: "playlist",
+        playerStatus.textContent =
+            "DAREBEE video ID not assigned";
 
-        list: DAREBEE_PLAYLIST,
+        videoPlaceholder.classList.remove(
+            "hidden"
+        );
 
-        index:
-            exercise.playlistIndex,
+        videoPlaceholder.textContent =
+            "DAREBEE video ID required";
 
-        startSeconds: 0
-
-    });
+        return;
+    }
 
 
     /*
-       autoplay is optional.
+       THIS is what guarantees that the
+       video corresponds to the exercise.
 
-       We use it when moving to the next
-       exercise during the workout.
+       No playlist index.
+       No random playlist position.
+       No search.
     */
 
-    if (autoplay) {
+    videoPlaceholder.classList.remove(
+        "hidden"
+    );
 
-        setTimeout(
-            () => {
-
-                if (
-                    player &&
-                    youtubeReady
-                ) {
-
-                    player.playVideo();
-
-                }
-
-            },
-            500
-        );
-
-    }
+    videoPlaceholder.textContent =
+        "Loading DAREBEE video...";
 
 
     playerStatus.textContent =
         "DAREBEE • loading";
+
+
+    player.loadVideoById({
+
+        videoId:
+            exercise.videoId,
+
+        startSeconds:
+            0
+
+    });
+
+
+    setTimeout(
+        () => {
+
+            videoPlaceholder.classList.add(
+                "hidden"
+            );
+
+            if (
+                autoplay &&
+                player
+            ) {
+
+                player.playVideo();
+
+            }
+
+        },
+        700
+    );
 }
 
 
@@ -1301,8 +1413,40 @@ function buildRoutineList() {
 
     routineList.innerHTML = "";
 
+    let lastBlock = "";
+
+
     routine.forEach(
         (exercise, index) => {
+
+
+            /*
+               Block heading
+            */
+
+            if (
+                exercise.block !== lastBlock
+            ) {
+
+                const heading =
+                    document.createElement(
+                        "div"
+                    );
+
+                heading.className =
+                    "block-label";
+
+                heading.textContent =
+                    exercise.block;
+
+                routineList.appendChild(
+                    heading
+                );
+
+                lastBlock =
+                    exercise.block;
+            }
+
 
             const item =
                 document.createElement(
@@ -1338,13 +1482,9 @@ function buildRoutineList() {
                     </div>
 
                 </div>
+
             `;
 
-
-            /*
-               Clicking an exercise immediately
-               changes the same YouTube player.
-            */
 
             item.addEventListener(
                 "click",
@@ -1401,10 +1541,6 @@ function selectExercise(index) {
         "▶";
 
 
-    /*
-       Change the video in the SAME player.
-    */
-
     loadExerciseVideo(
         currentIndex,
         false
@@ -1416,7 +1552,7 @@ function selectExercise(index) {
 
 
 /* =========================================================
-   UPDATE ROADMAP
+   ROADMAP
 ========================================================= */
 
 function updateRoutineList() {
@@ -1432,6 +1568,7 @@ function updateRoutineList() {
             if (!item) {
                 return;
             }
+
 
             const status =
                 item.querySelector(
@@ -1451,10 +1588,6 @@ function updateRoutineList() {
             );
 
 
-            /*
-               COMPLETED
-            */
-
             if (
                 index < currentIndex
             ) {
@@ -1468,13 +1601,8 @@ function updateRoutineList() {
 
                 progress.style.width =
                     "100%";
-
             }
 
-
-            /*
-               CURRENT
-            */
 
             else if (
                 index === currentIndex
@@ -1510,21 +1638,14 @@ function updateRoutineList() {
 
                     progress.style.width =
                         percentage + "%";
-
                 }
 
                 else {
 
                     progress.style.width =
                         "0%";
-
                 }
 
-
-                /*
-                   Keep current exercise
-                   visible in roadmap.
-                */
 
                 item.scrollIntoView({
 
@@ -1537,10 +1658,6 @@ function updateRoutineList() {
             }
 
 
-            /*
-               PENDING
-            */
-
             else {
 
                 item.classList.add(
@@ -1552,7 +1669,6 @@ function updateRoutineList() {
 
                 progress.style.width =
                     "0%";
-
             }
 
         }
@@ -1561,7 +1677,7 @@ function updateRoutineList() {
 
 
 /* =========================================================
-   UPDATE DISPLAY
+   DISPLAY
 ========================================================= */
 
 function updateDisplay() {
@@ -1581,19 +1697,12 @@ function updateDisplay() {
     ) {
 
         exerciseElement.textContent =
-
             "Prepare for " +
-
             exercise.name +
-
             " (" +
-
             (currentIndex + 1) +
-
             "/" +
-
             routine.length +
-
             ")";
 
     }
@@ -1604,17 +1713,11 @@ function updateDisplay() {
     ) {
 
         exerciseElement.textContent =
-
             exercise.name +
-
             " (" +
-
             (currentIndex + 1) +
-
             "/" +
-
             routine.length +
-
             ")";
 
     }
@@ -1629,17 +1732,13 @@ function updateDisplay() {
                 currentIndex + 1
             ];
 
-
         exerciseElement.textContent =
-
             "Rest — Next: " +
-
             (
                 next
                     ? next.name
                     : "Workout Complete"
             );
-
     }
 
 
@@ -1664,14 +1763,15 @@ function updateDisplay() {
 
 
 /* =========================================================
-   START WORKOUT
+   START
 ========================================================= */
 
 function startTimer() {
 
     clearInterval(timer);
 
-    currentIndex = 0;
+    currentIndex =
+        0;
 
     phase =
         "prepare";
@@ -1692,10 +1792,6 @@ function startTimer() {
     playPauseButton.textContent =
         "❚❚";
 
-
-    /*
-       Load first DAREBEE video.
-    */
 
     loadExerciseVideo(
         0,
@@ -1726,10 +1822,6 @@ function startTimer() {
 
 function togglePause() {
 
-    /*
-       First press starts workout.
-    */
-
     if (
         !workoutStarted
     ) {
@@ -1758,7 +1850,6 @@ function togglePause() {
         ) {
 
             player.pauseVideo();
-
         }
 
     }
@@ -1775,15 +1866,13 @@ function togglePause() {
         ) {
 
             player.playVideo();
-
         }
-
     }
 }
 
 
 /* =========================================================
-   NEXT MOVE
+   NEXT
 ========================================================= */
 
 function skipMove() {
@@ -1793,6 +1882,7 @@ function skipMove() {
     ) {
         return;
     }
+
 
     clearInterval(timer);
 
@@ -1855,7 +1945,7 @@ function skipMove() {
 
 
 /* =========================================================
-   PREVIOUS MOVE
+   PREVIOUS
 ========================================================= */
 
 function previousMove() {
@@ -1866,6 +1956,7 @@ function previousMove() {
         return;
     }
 
+
     clearInterval(timer);
 
     window.speechSynthesis.cancel();
@@ -1875,7 +1966,8 @@ function previousMove() {
         currentIndex <= 0
     ) {
 
-        currentIndex = 0;
+        currentIndex =
+            0;
 
         phase =
             "prepare";
@@ -1883,12 +1975,10 @@ function previousMove() {
         timeLeft =
             5;
 
-
         loadExerciseVideo(
             0,
             false
         );
-
 
         updateDisplay();
 
@@ -2019,13 +2109,10 @@ function tick() {
     ) {
 
         timeLeft--;
-
     }
 
 
-    /*
-       PREPARE
-    */
+    /* PREPARE */
 
     if (
 
@@ -2040,7 +2127,6 @@ function tick() {
         speak(
             String(timeLeft)
         );
-
     }
 
 
@@ -2058,9 +2144,7 @@ function tick() {
     }
 
 
-    /*
-       WORK
-    */
+    /* WORK */
 
     if (
 
@@ -2073,7 +2157,6 @@ function tick() {
         speak(
             "10 seconds left"
         );
-
     }
 
 
@@ -2090,7 +2173,6 @@ function tick() {
         speak(
             String(timeLeft)
         );
-
     }
 
 
@@ -2108,9 +2190,7 @@ function tick() {
     }
 
 
-    /*
-       REST
-    */
+    /* REST */
 
     if (
 
@@ -2125,7 +2205,6 @@ function tick() {
         speak(
             String(timeLeft)
         );
-
     }
 
 
@@ -2154,9 +2233,7 @@ function tick() {
 function nextPhase() {
 
 
-    /*
-       PREPARE → WORK
-    */
+    /* PREPARE → WORK */
 
     if (
         phase === "prepare"
@@ -2186,9 +2263,7 @@ function nextPhase() {
     }
 
 
-    /*
-       WORK → REST
-    */
+    /* WORK → REST */
 
     if (
         phase === "work"
@@ -2219,60 +2294,19 @@ function nextPhase() {
 
         updateDisplay();
 
-
         speak("Rest");
-
-
-        /*
-           Announce next exercise.
-        */
-
-        if (
-            currentIndex + 1 <
-            routine.length
-        ) {
-
-            setTimeout(
-                () => {
-
-                    if (
-
-                        phase === "rest" &&
-
-                        !paused
-
-                    ) {
-
-                        speak(
-                            "Next exercise is " +
-
-                            routine[
-                                currentIndex + 1
-                            ].name
-                        );
-
-                    }
-
-                },
-                2000
-            );
-
-        }
 
         return;
     }
 
 
-    /*
-       REST → NEXT
-    */
+    /* REST → NEXT */
 
     if (
         phase === "rest"
     ) {
 
         goToNextExercise();
-
     }
 }
 
@@ -2364,10 +2398,6 @@ function finishWorkout() {
         );
 
 
-    /*
-       Mark everything complete.
-    */
-
     routine.forEach(
         (exercise, index) => {
 
@@ -2410,7 +2440,6 @@ function finishWorkout() {
 
             progress.style.width =
                 "100%";
-
         }
     );
 
@@ -2432,4 +2461,3 @@ buildRoutineList();
 </body>
 
 </html>
-```
