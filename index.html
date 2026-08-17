@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,13 +7,13 @@
 <meta charset="UTF-8">
 
 <meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0"
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
 >
 
 <meta
-  name="referrer"
-  content="strict-origin-when-cross-origin"
+    name="referrer"
+    content="strict-origin-when-cross-origin"
 >
 
 <title>Yalla Workout</title>
@@ -21,67 +22,61 @@
 <style>
 
 /* =========================================================
-   GLOBAL
+   RESET
 ========================================================= */
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 html,
 body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  min-height: 100%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
 }
 
 body {
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 
-  font-family:
-    Arial,
-    Helvetica,
-    sans-serif;
+    background: #111;
+    color: #eee;
 
-  background: #111;
-
-  color: #eee;
-
+    overflow: hidden;
 }
 
 
 /* =========================================================
-   LAYOUT
+   APP
 ========================================================= */
 
-.container {
-
-  display: flex;
-
-  min-height: 100vh;
-
+.app {
+    display: flex;
+    width: 100%;
+    height: 100vh;
 }
 
 
 /* =========================================================
-   EXERCISE ROADMAP
+   ROADMAP
 ========================================================= */
 
-.exercise-list {
+.sidebar {
 
-  width: 340px;
+    width: 340px;
+    flex-shrink: 0;
 
-  background: #181818;
+    background: #181818;
 
-  border-right:
-    1px solid #2b2b2b;
+    border-right: 1px solid #292929;
 
-  padding: 20px;
+    overflow-y: auto;
 
-  overflow-y: auto;
-
-  height: 100vh;
-
+    padding: 18px 14px;
 }
 
 
@@ -91,62 +86,70 @@ body {
 
 .exercise-item {
 
-  position: relative;
+    position: relative;
 
-  padding: 8px 8px;
+    padding: 9px 10px;
 
-  margin-bottom: 2px;
+    margin-bottom: 3px;
 
-  border-radius: 5px;
+    border-radius: 6px;
 
-  color: #555;
+    color: #555;
 
-  font-size: 0.9em;
+    font-size: 14px;
 
-  transition:
-    background 0.2s,
-    color 0.2s;
+    cursor: pointer;
 
+    user-select: none;
+
+    transition:
+        background 0.15s ease,
+        color 0.15s ease;
 }
 
-
-.exercise-item.completed {
-
-  color: #777;
-
+.exercise-item:hover {
+    background: #202020;
+    color: #aaa;
 }
-
 
 .exercise-item.active {
-
-  color: #eee;
-
-  background: #222;
-
+    background: #242424;
+    color: #eee;
 }
 
+.exercise-item.completed {
+    color: #777;
+}
 
 .exercise-item.pending {
-
-  color: #555;
-
+    color: #555;
 }
 
 
 /* =========================================================
-   STATUS
+   ITEM TOP
 ========================================================= */
+
+.exercise-top {
+    display: flex;
+    align-items: center;
+}
 
 .status {
 
-  display: inline-block;
+    width: 24px;
 
-  width: 24px;
+    flex-shrink: 0;
 
-  margin-right: 5px;
+    margin-right: 4px;
 
-  text-align: center;
+    text-align: center;
 
+    color: inherit;
+}
+
+.exercise-name {
+    flex: 1;
 }
 
 
@@ -156,34 +159,30 @@ body {
 
 .progress-container {
 
-  height: 3px;
+    height: 3px;
 
-  background: #333;
+    margin:
+        7px
+        0
+        0
+        28px;
 
-  margin:
-    7px
-    0
-    2px
-    29px;
+    background: #303030;
 
-  border-radius: 2px;
+    border-radius: 3px;
 
-  overflow: hidden;
-
+    overflow: hidden;
 }
-
 
 .progress-bar {
 
-  height: 100%;
+    width: 0%;
+    height: 100%;
 
-  width: 0%;
+    background: #eee;
 
-  background: #eee;
-
-  transition:
-    width 0.3s linear;
-
+    transition:
+        width 0.2s linear;
 }
 
 
@@ -193,20 +192,25 @@ body {
 
 .main {
 
-  flex: 1;
+    flex: 1;
 
-  display: flex;
+    min-width: 0;
 
-  flex-direction: column;
+    height: 100vh;
 
-  justify-content: center;
+    display: flex;
 
-  align-items: center;
+    flex-direction: column;
 
-  padding: 30px;
+    align-items: center;
 
-  min-width: 0;
+    justify-content: center;
 
+    padding:
+        25px
+        35px;
+
+    overflow-y: auto;
 }
 
 
@@ -216,17 +220,20 @@ body {
 
 #exercise {
 
-  font-size: 2em;
+    width: 100%;
 
-  margin:
-    10px
-    20px
-    8px;
+    max-width: 800px;
 
-  text-align: center;
+    margin:
+        0
+        0
+        7px;
 
-  max-width: 800px;
+    text-align: center;
 
+    font-size: 28px;
+
+    font-weight: 600;
 }
 
 
@@ -236,67 +243,93 @@ body {
 
 #source {
 
-  font-size: 0.8em;
+    margin-bottom: 18px;
 
-  color: #666;
+    color: #666;
 
-  margin-bottom: 20px;
-
+    font-size: 12px;
 }
 
 
 /* =========================================================
-   YOUTUBE PLAYER
-
-   ALWAYS VISIBLE
-
-   NO POPUP
-
-   NO NEW PAGE
-
+   VIDEO
 ========================================================= */
 
 .video-wrapper {
 
-  width:
-    min(760px, 100%);
+    width:
+        min(760px, 100%);
 
-  margin-bottom: 25px;
-
+    margin-bottom: 24px;
 }
 
 
 .video-frame {
 
-  position: relative;
+    position: relative;
 
-  width: 100%;
+    width: 100%;
 
-  aspect-ratio: 16 / 9;
+    aspect-ratio: 16 / 9;
 
-  background: #000;
+    background: #000;
 
-  border-radius: 10px;
+    border-radius: 10px;
 
-  overflow: hidden;
+    overflow: hidden;
 
+    box-shadow:
+        0 10px 35px rgba(0,0,0,0.35);
 }
 
 
 /*
-   YouTube iframe created by the API
+   The YouTube iframe is created here.
+
+   It NEVER opens another page.
 */
 
 #youtubePlayer {
 
-  position: absolute;
+    position: absolute;
 
-  inset: 0;
+    inset: 0;
 
-  width: 100%;
+    width: 100%;
 
-  height: 100%;
+    height: 100%;
+}
 
+
+/* =========================================================
+   VIDEO PLACEHOLDER
+========================================================= */
+
+.video-placeholder {
+
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #090909;
+
+    color: #555;
+
+    font-size: 13px;
+
+    pointer-events: none;
+
+    z-index: 2;
+}
+
+.video-placeholder.hidden {
+    display: none;
 }
 
 
@@ -306,12 +339,18 @@ body {
 
 #time {
 
-  font-size: 5em;
+    margin:
+        0
+        0
+        8px;
 
-  font-weight: bold;
+    font-size: 72px;
 
-  margin: 10px;
+    line-height: 1;
 
+    font-weight: 700;
+
+    letter-spacing: 2px;
 }
 
 
@@ -321,23 +360,25 @@ body {
 
 #totalLabel {
 
-  margin-top: 20px;
+    margin-top: 10px;
 
-  color: #666;
+    color: #555;
 
-  font-size: 0.8em;
+    font-size: 10px;
 
-  letter-spacing: 1px;
-
+    letter-spacing: 1.5px;
 }
-
 
 #totalTime {
 
-  font-size: 2em;
+    margin:
+        4px
+        0
+        22px;
 
-  margin-bottom: 25px;
+    font-size: 25px;
 
+    color: #888;
 }
 
 
@@ -347,49 +388,65 @@ body {
 
 .controls {
 
-  display: flex;
+    display: flex;
 
-  justify-content: center;
+    align-items: center;
 
-  align-items: center;
+    justify-content: center;
 
-  gap: 10px;
-
+    gap: 9px;
 }
-
 
 .controls button {
 
-  width: 65px;
+    width: 62px;
+    height: 52px;
 
-  height: 55px;
+    border: 0;
 
-  border: 0;
+    border-radius: 8px;
 
-  border-radius: 8px;
+    background: #eee;
 
-  background: #eee;
+    color: #111;
 
-  color: #111;
+    font-size: 23px;
 
-  font-size: 1.5em;
+    cursor: pointer;
 
-  cursor: pointer;
-
+    transition:
+        transform 0.08s ease,
+        background 0.15s ease;
 }
-
 
 .controls button:hover {
+    background: #ccc;
+}
 
-  background: #ccc;
-
+.controls button:active {
+    transform: scale(0.94);
 }
 
 
-.controls button:active {
+/* =========================================================
+   SMALL PLAYER STATUS
+========================================================= */
 
-  transform: scale(0.95);
+.player-status {
 
+    width: 100%;
+
+    max-width: 760px;
+
+    height: 18px;
+
+    margin-top: 8px;
+
+    text-align: right;
+
+    color: #444;
+
+    font-size: 10px;
 }
 
 
@@ -399,47 +456,56 @@ body {
 
 @media (max-width: 700px) {
 
-  .container {
+    body {
+        overflow: auto;
+    }
 
-    flex-direction: column;
+    .app {
+        height: auto;
+        min-height: 100vh;
+        flex-direction: column;
+    }
 
-  }
+    .sidebar {
 
+        width: 100%;
 
-  .exercise-list {
+        height: 220px;
 
-    width: 100%;
+        border-right: 0;
 
-    height: 220px;
+        border-bottom:
+            1px solid #292929;
+    }
 
-    border-right: 0;
+    .main {
 
-    border-bottom:
-      1px solid #2b2b2b;
+        min-height:
+            calc(100vh - 220px);
 
-  }
+        height: auto;
 
+        padding:
+            20px
+            15px;
+    }
 
-  .main {
+    #exercise {
+        font-size: 21px;
+    }
 
-    padding: 20px;
+    #time {
+        font-size: 55px;
+    }
 
-  }
+    .video-wrapper {
+        margin-bottom: 18px;
+    }
 
-
-  #exercise {
-
-    font-size: 1.5em;
-
-  }
-
-
-  #time {
-
-    font-size: 4em;
-
-  }
-
+    .controls button {
+        width: 55px;
+        height: 48px;
+    }
 }
 
 </style>
@@ -450,137 +516,132 @@ body {
 <body>
 
 
-<div class="container">
+<div class="app">
 
 
 <!-- =======================================================
-     LEFT ROADMAP
+     SIDEBAR
 ======================================================== -->
 
-<aside class="exercise-list">
+<aside class="sidebar">
 
-  <div id="routineList"></div>
+    <div id="routineList"></div>
 
 </aside>
 
 
-
 <!-- =======================================================
-     MAIN WORKOUT
+     MAIN
 ======================================================== -->
 
 <main class="main">
 
 
-  <!-- CURRENT EXERCISE -->
+    <!-- CURRENT EXERCISE -->
 
-  <div id="exercise">
-
-    Press Play
-
-  </div>
+    <div id="exercise">
+        Press Play
+    </div>
 
 
-  <!-- SOURCE -->
+    <!-- SOURCE -->
 
-  <div id="source">
-
-    Exercise demonstration
-
-  </div>
+    <div id="source">
+        DAREBEE Exercise Library
+    </div>
 
 
-  <!-- =====================================================
-       PERMANENT YOUTUBE PLAYER
+    <!-- =====================================================
+         YOUTUBE PLAYER
 
-       It never opens another page.
-       It never becomes a button.
-       It remains inside this page.
-  ====================================================== -->
+         ONE PLAYER ONLY.
+         IT NEVER OPENS A NEW PAGE.
+    ====================================================== -->
 
-  <div class="video-wrapper">
+    <div class="video-wrapper">
 
-    <div class="video-frame">
+        <div class="video-frame">
 
-      <div id="youtubePlayer"></div>
+            <div
+                id="youtubePlayer">
+            </div>
+
+            <div
+                id="videoPlaceholder"
+                class="video-placeholder">
+
+                Loading DAREBEE video...
+
+            </div>
+
+        </div>
 
     </div>
 
-  </div>
+
+    <!-- PLAYER STATUS -->
+
+    <div
+        id="playerStatus"
+        class="player-status">
+
+        YouTube player loading...
+
+    </div>
 
 
-  <!-- TIMER -->
+    <!-- TIMER -->
 
-  <div id="time">
-
-    00:00
-
-  </div>
+    <div id="time">
+        00:00
+    </div>
 
 
-  <!-- TOTAL -->
+    <!-- TOTAL -->
 
-  <div id="totalLabel">
+    <div id="totalLabel">
+        TOTAL ELAPSED
+    </div>
 
-    TOTAL ELAPSED
-
-  </div>
-
-
-  <div id="totalTime">
-
-    00:00
-
-  </div>
+    <div id="totalTime">
+        00:00
+    </div>
 
 
-  <!-- CONTROLS -->
+    <!-- CONTROLS -->
 
-  <div class="controls">
+    <div class="controls">
 
+        <button
+            id="playPauseButton"
+            onclick="togglePause()">
 
-    <!-- PLAY / PAUSE -->
+            ▶
 
-    <button
-      id="playPauseButton"
-      onclick="togglePause()">
+        </button>
 
-      ▶
+        <button
+            onclick="previousMove()">
 
-    </button>
+            ‹
 
+        </button>
 
-    <!-- PREVIOUS -->
+        <button
+            onclick="skipMove()">
 
-    <button
-      onclick="previousMove()">
+            ›
 
-      ‹
+        </button>
 
-    </button>
+        <button
+            onclick="resetTimer()">
 
+            ↻
 
-    <!-- NEXT -->
+        </button>
 
-    <button
-      onclick="skipMove()">
-
-      ›
-
-    </button>
-
-
-    <!-- RESET -->
-
-    <button
-      onclick="resetTimer()">
-
-      ↻
-
-    </button>
-
-
-  </div>
+    </div>
 
 
 </main>
@@ -594,78 +655,307 @@ body {
 ========================================================= -->
 
 <script
-  src="https://www.youtube.com/iframe_api">
+    src="https://www.youtube.com/iframe_api">
 </script>
-
 
 
 <script>
 
 /* =========================================================
-   EXERCISE DATABASE
+   DAREBEE SOURCE
+=========================================================
 
-   APPROVED SOURCES:
-
-   DAREBEE
-   Leap Fitness Official
+   This is the DAREBEE Exercise Library playlist.
 
    IMPORTANT:
 
-   The "youtube" field contains ONLY the
-   YouTube video ID.
+   We do NOT put fake video IDs into the database.
 
-   The player automatically converts it
-   into an embedded player.
+   The YouTube player loads the actual playlist and
+   selects the requested item.
 
 ========================================================= */
 
+const DAREBEE_PLAYLIST =
+    "PLQSMS0J6JbrKdSOSbyJXaQ_zN_HSSp7zZ";
+
+
+/* =========================================================
+   EXERCISE DATABASE
+=========================================================
+
+   playlistIndex = position inside the DAREBEE
+   Exercise Library playlist.
+
+   IMPORTANT:
+   These are playlist positions, NOT video IDs.
+
+   This keeps the data separate from the player.
+
+========================================================= */
 
 const routine = [
-  {name:"March in Place with Arm Swing",work:60,rest:10,source:"DAREBEE",playlistIndex:0},
-  {name:"Lateral Step with Arm Sweep",work:45,rest:10,source:"DAREBEE",playlistIndex:1},
-  {name:"Inchworm Walkout",work:45,rest:15,source:"DAREBEE",playlistIndex:2},
-  {name:"World's Greatest Stretch",work:45,rest:10,source:"DAREBEE",playlistIndex:3},
-  {name:"Standing Thoracic Rotation",work:45,rest:10,source:"DAREBEE",playlistIndex:4},
-  {name:"Wall Slide with Lift-Off",work:45,rest:10,source:"DAREBEE",playlistIndex:5},
-  {name:"Scapular Push-Up",work:40,rest:15,source:"DAREBEE",playlistIndex:6},
-  {name:"Bird Dog",work:40,rest:15,source:"DAREBEE",playlistIndex:7},
-  {name:"Beast to Crab Transition",work:45,rest:15,source:"DAREBEE",playlistIndex:8},
-  {name:"Beast to Crab Transition",work:45,rest:15,source:"DAREBEE",playlistIndex:9},
-  {name:"Beast to Crab Transition",work:45,rest:20,source:"DAREBEE",playlistIndex:10},
-  {name:"Crab Kick-Through",work:45,rest:15,source:"DAREBEE",playlistIndex:11},
-  {name:"Crab Kick-Through",work:45,rest:15,source:"DAREBEE",playlistIndex:12},
-  {name:"Crab Kick-Through",work:45,rest:20,source:"DAREBEE",playlistIndex:13},
-  {name:"Push-Up to T-Rotation",work:40,rest:15,source:"DAREBEE",playlistIndex:14},
-  {name:"Push-Up to Knee Drive",work:40,rest:15,source:"DAREBEE",playlistIndex:15},
-  {name:"Push-Up to Downward Dog",work:40,rest:20,source:"DAREBEE",playlistIndex:16},
-  {name:"Bear Crawl to Lateral Reach",work:45,rest:15,source:"DAREBEE",playlistIndex:17},
-  {name:"Bear Crawl to Lateral Reach",work:45,rest:15,source:"DAREBEE",playlistIndex:18},
-  {name:"Bear Crawl to Lateral Reach",work:45,rest:20,source:"DAREBEE",playlistIndex:19},
-  {name:"Bear Crawl to Thoracic Rotation",work:45,rest:15,source:"DAREBEE",playlistIndex:20},
-  {name:"Plank to Frogger",work:45,rest:15,source:"DAREBEE",playlistIndex:21},
-  {name:"Prone Superman Pull-Down",work:40,rest:20,source:"DAREBEE",playlistIndex:22},
-  {name:"Dead Bug",work:45,rest:15,source:"Leap Fitness Official",playlistIndex:23},
-  {name:"Side Plank Thread the Needle — Left",work:30,rest:10,source:"Leap Fitness Official",playlistIndex:24},
-  {name:"Side Plank Thread the Needle — Right",work:30,rest:15,source:"Leap Fitness Official",playlistIndex:25},
-  {name:"Hollow Body Alternating Toe Tap",work:40,rest:15,source:"Leap Fitness Official",playlistIndex:26},
-  {name:"Reverse Crunch with Reach",work:40,rest:15,source:"Leap Fitness Official",playlistIndex:27},
-  {name:"Cross-Body Mountain Climber",work:40,rest:20,source:"Leap Fitness Official",playlistIndex:28},
-  {name:"Child's Pose with Alternating Side Reach",work:45,rest:10,source:"DAREBEE",playlistIndex:29},
-  {name:"Doorway Chest Stretch",work:45,rest:10,source:"DAREBEE",playlistIndex:30},
-  {name:"Cross-Body Shoulder Stretch",work:45,rest:10,source:"DAREBEE",playlistIndex:31},
-  {name:"Half-Kneeling Thoracic Rotation — Left",work:30,rest:10,source:"DAREBEE",playlistIndex:32},
-  {name:"Half-Kneeling Thoracic Rotation — Right",work:30,rest:10,source:"DAREBEE",playlistIndex:33},
-  {name:"90/90 Hip Stretch — Left",work:30,rest:10,source:"DAREBEE",playlistIndex:34},
-  {name:"90/90 Hip Stretch — Right",work:30,rest:10,source:"DAREBEE",playlistIndex:35}
-];
 
+    {
+        name: "March in Place with Arm Swing",
+        work: 60,
+        rest: 10,
+        playlistIndex: 0
+    },
+
+    {
+        name: "Lateral Step with Arm Sweep",
+        work: 45,
+        rest: 10,
+        playlistIndex: 1
+    },
+
+    {
+        name: "Inchworm Walkout",
+        work: 45,
+        rest: 15,
+        playlistIndex: 2
+    },
+
+    {
+        name: "World's Greatest Stretch",
+        work: 45,
+        rest: 10,
+        playlistIndex: 3
+    },
+
+    {
+        name: "Standing Thoracic Rotation",
+        work: 45,
+        rest: 10,
+        playlistIndex: 4
+    },
+
+    {
+        name: "Wall Slide with Lift-Off",
+        work: 45,
+        rest: 10,
+        playlistIndex: 5
+    },
+
+    {
+        name: "Scapular Push-Up",
+        work: 40,
+        rest: 15,
+        playlistIndex: 6
+    },
+
+    {
+        name: "Bird Dog",
+        work: 40,
+        rest: 15,
+        playlistIndex: 7
+    },
+
+    {
+        name: "Beast to Crab Transition",
+        work: 45,
+        rest: 15,
+        playlistIndex: 8
+    },
+
+    {
+        name: "Beast to Crab Transition",
+        work: 45,
+        rest: 15,
+        playlistIndex: 9
+    },
+
+    {
+        name: "Beast to Crab Transition",
+        work: 45,
+        rest: 20,
+        playlistIndex: 10
+    },
+
+    {
+        name: "Crab Kick-Through",
+        work: 45,
+        rest: 15,
+        playlistIndex: 11
+    },
+
+    {
+        name: "Crab Kick-Through",
+        work: 45,
+        rest: 15,
+        playlistIndex: 12
+    },
+
+    {
+        name: "Crab Kick-Through",
+        work: 45,
+        rest: 20,
+        playlistIndex: 13
+    },
+
+    {
+        name: "Push-Up to T-Rotation",
+        work: 40,
+        rest: 15,
+        playlistIndex: 14
+    },
+
+    {
+        name: "Push-Up to Knee Drive",
+        work: 40,
+        rest: 15,
+        playlistIndex: 15
+    },
+
+    {
+        name: "Push-Up to Downward Dog",
+        work: 40,
+        rest: 20,
+        playlistIndex: 16
+    },
+
+    {
+        name: "Bear Crawl to Lateral Reach",
+        work: 45,
+        rest: 15,
+        playlistIndex: 17
+    },
+
+    {
+        name: "Bear Crawl to Lateral Reach",
+        work: 45,
+        rest: 15,
+        playlistIndex: 18
+    },
+
+    {
+        name: "Bear Crawl to Lateral Reach",
+        work: 45,
+        rest: 20,
+        playlistIndex: 19
+    },
+
+    {
+        name: "Bear Crawl to Thoracic Rotation",
+        work: 45,
+        rest: 15,
+        playlistIndex: 20
+    },
+
+    {
+        name: "Plank to Frogger",
+        work: 45,
+        rest: 15,
+        playlistIndex: 21
+    },
+
+    {
+        name: "Prone Superman Pull-Down",
+        work: 40,
+        rest: 20,
+        playlistIndex: 22
+    },
+
+    {
+        name: "Dead Bug",
+        work: 45,
+        rest: 15,
+        playlistIndex: 23
+    },
+
+    {
+        name: "Side Plank Thread the Needle — Left",
+        work: 30,
+        rest: 10,
+        playlistIndex: 24
+    },
+
+    {
+        name: "Side Plank Thread the Needle — Right",
+        work: 30,
+        rest: 15,
+        playlistIndex: 25
+    },
+
+    {
+        name: "Hollow Body Alternating Toe Tap",
+        work: 40,
+        rest: 15,
+        playlistIndex: 26
+    },
+
+    {
+        name: "Reverse Crunch with Reach",
+        work: 40,
+        rest: 15,
+        playlistIndex: 27
+    },
+
+    {
+        name: "Cross-Body Mountain Climber",
+        work: 40,
+        rest: 20,
+        playlistIndex: 28
+    },
+
+    {
+        name: "Child's Pose with Alternating Side Reach",
+        work: 45,
+        rest: 10,
+        playlistIndex: 29
+    },
+
+    {
+        name: "Doorway Chest Stretch",
+        work: 45,
+        rest: 10,
+        playlistIndex: 30
+    },
+
+    {
+        name: "Cross-Body Shoulder Stretch",
+        work: 45,
+        rest: 10,
+        playlistIndex: 31
+    },
+
+    {
+        name: "Half-Kneeling Thoracic Rotation — Left",
+        work: 30,
+        rest: 10,
+        playlistIndex: 32
+    },
+
+    {
+        name: "Half-Kneeling Thoracic Rotation — Right",
+        work: 30,
+        rest: 10,
+        playlistIndex: 33
+    },
+
+    {
+        name: "90/90 Hip Stretch — Left",
+        work: 30,
+        rest: 10,
+        playlistIndex: 34
+    },
+
+    {
+        name: "90/90 Hip Stretch — Right",
+        work: 30,
+        rest: 10,
+        playlistIndex: 35
+    }
+
+];
 
 
 /* =========================================================
    STATE
 ========================================================= */
 
-let idx = 0;
+let currentIndex = 0;
 
 let phase = "prepare";
 
@@ -679,128 +969,91 @@ let paused = false;
 
 let workoutStarted = false;
 
-
-/*
-   YouTube player instance
-*/
+let youtubeReady = false;
 
 let player = null;
 
-let youtubeReady = false;
-
-
 
 /* =========================================================
-   DOM ELEMENTS
+   DOM
 ========================================================= */
 
 const exerciseElement =
-  document.getElementById(
-    "exercise"
-  );
-
+    document.getElementById("exercise");
 
 const sourceElement =
-  document.getElementById(
-    "source"
-  );
-
+    document.getElementById("source");
 
 const timeElement =
-  document.getElementById(
-    "time"
-  );
-
+    document.getElementById("time");
 
 const totalTimeElement =
-  document.getElementById(
-    "totalTime"
-  );
-
+    document.getElementById("totalTime");
 
 const routineList =
-  document.getElementById(
-    "routineList"
-  );
-
+    document.getElementById("routineList");
 
 const playPauseButton =
-  document.getElementById(
-    "playPauseButton"
-  );
+    document.getElementById("playPauseButton");
 
+const videoPlaceholder =
+    document.getElementById("videoPlaceholder");
+
+const playerStatus =
+    document.getElementById("playerStatus");
 
 
 /* =========================================================
-   YOUTUBE API
-
-   YouTube calls this automatically.
+   YOUTUBE API READY
 ========================================================= */
 
 function onYouTubeIframeAPIReady() {
 
+    player = new YT.Player(
+        "youtubePlayer",
+        {
 
-  player =
-    new YT.Player(
+            /*
+               IMPORTANT:
 
-      "youtubePlayer",
+               We initialize the player with the
+               DAREBEE playlist itself.
 
-      {
+               No fake video ID.
+            */
 
-        /*
-           First exercise is loaded
-           immediately.
-        */
+            playerVars: {
 
-        videoId:
-          routine[0].youtube,
+                listType: "playlist",
 
+                list: DAREBEE_PLAYLIST,
 
-        playerVars: {
+                playsinline: 1,
 
-          /*
-             Important for mobile.
-          */
+                rel: 0,
 
-          playsinline: 1,
+                modestbranding: 1,
 
+                iv_load_policy: 3
 
-          /*
-             Don't show unrelated
-             recommendations where
-             possible.
-          */
+            },
 
-          rel: 0,
+            events: {
 
+                onReady:
+                    onPlayerReady,
 
-          /*
-             Tell YouTube which page
-             is using the player.
-          */
+                onStateChange:
+                    onPlayerStateChange,
 
-          origin:
-            window.location.origin
+                onError:
+                    onPlayerError
 
-        },
-
-
-        events: {
-
-          onReady:
-            onPlayerReady,
-
-          onError:
-            onPlayerError
+            }
 
         }
-
-      }
-
     );
-
 }
-
 
 
 /* =========================================================
@@ -809,10 +1062,74 @@ function onYouTubeIframeAPIReady() {
 
 function onPlayerReady() {
 
-  youtubeReady = true;
+    youtubeReady = true;
 
+    videoPlaceholder.classList.add(
+        "hidden"
+    );
+
+    playerStatus.textContent =
+        "DAREBEE Exercise Library";
+
+    /*
+       Select the first exercise.
+    */
+
+    loadExerciseVideo(
+        currentIndex,
+        false
+    );
 }
 
+
+/* =========================================================
+   PLAYER STATE
+========================================================= */
+
+function onPlayerStateChange(event) {
+
+    /*
+       YouTube is playing.
+    */
+
+    if (
+        event.data === YT.PlayerState.PLAYING
+    ) {
+
+        playerStatus.textContent =
+            "DAREBEE • playing";
+
+    }
+
+
+    /*
+       Paused.
+    */
+
+    else if (
+        event.data === YT.PlayerState.PAUSED
+    ) {
+
+        playerStatus.textContent =
+            "DAREBEE • paused";
+
+    }
+
+
+    /*
+       Ended.
+    */
+
+    else if (
+        event.data === YT.PlayerState.ENDED
+    ) {
+
+        playerStatus.textContent =
+            "DAREBEE • video ended";
+
+    }
+
+}
 
 
 /* =========================================================
@@ -821,43 +1138,100 @@ function onPlayerReady() {
 
 function onPlayerError(event) {
 
-  console.log(
-    "YouTube player error:",
-    event.data
-  );
+    console.error(
+        "YouTube error:",
+        event.data
+    );
 
+    playerStatus.textContent =
+        "YouTube video unavailable";
 }
 
 
-
 /* =========================================================
-   LOAD VIDEO
+   LOAD EXERCISE VIDEO
+=========================================================
+
+   THIS IS THE IMPORTANT PART.
+
+   We use:
+
+       loadPlaylist()
+
+   rather than pretending a playlist index is
+   a video ID.
+
 ========================================================= */
 
-function loadVideo() {
+function loadExerciseVideo(
+    index,
+    autoplay = false
+) {
 
-  if (
-    !youtubeReady ||
-    !player
-  ) {
+    if (
+        !youtubeReady ||
+        !player
+    ) {
+        return;
+    }
 
-    return;
+    const exercise =
+        routine[index];
 
-  }
+    if (!exercise) {
+        return;
+    }
 
-  const exercise =
-    routine[idx];
 
-  if (!exercise)
-    return;
+    /*
+       Tell the existing player to load the
+       DAREBEE playlist and select the desired item.
+    */
 
-  player.cuePlaylist({
-    listType: "playlist",
-    list: "PLQSMS0J6JbrKdSOSbyJXaQ_zN_HSSp7zZ",
-    index: exercise.playlistIndex,
-    startSeconds: 0
-  });
+    player.loadPlaylist({
 
+        listType: "playlist",
+
+        list: DAREBEE_PLAYLIST,
+
+        index:
+            exercise.playlistIndex,
+
+        startSeconds: 0
+
+    });
+
+
+    /*
+       autoplay is optional.
+
+       We use it when moving to the next
+       exercise during the workout.
+    */
+
+    if (autoplay) {
+
+        setTimeout(
+            () => {
+
+                if (
+                    player &&
+                    youtubeReady
+                ) {
+
+                    player.playVideo();
+
+                }
+
+            },
+            500
+        );
+
+    }
+
+
+    playerStatus.textContent =
+        "DAREBEE • loading";
 }
 
 
@@ -867,24 +1241,25 @@ function loadVideo() {
 
 function speak(text) {
 
-  window.speechSynthesis.cancel();
+    if (
+        !("speechSynthesis" in window)
+    ) {
+        return;
+    }
 
+    window.speechSynthesis.cancel();
 
-  const msg =
-    new SpeechSynthesisUtterance(
-      text
+    const message =
+        new SpeechSynthesisUtterance(
+            text
+        );
+
+    message.rate = 0.9;
+
+    window.speechSynthesis.speak(
+        message
     );
-
-
-  msg.rate = 0.9;
-
-
-  window.speechSynthesis.speak(
-    msg
-  );
-
 }
-
 
 
 /* =========================================================
@@ -893,34 +1268,29 @@ function speak(text) {
 
 function formatTime(seconds) {
 
-  const minutes =
-    Math.floor(
-      seconds / 60
+    const minutes =
+        Math.floor(
+            seconds / 60
+        );
+
+    const secs =
+        seconds % 60;
+
+    return (
+
+        String(minutes)
+            .padStart(2, "0")
+
+        +
+
+        ":"
+
+        +
+
+        String(secs)
+            .padStart(2, "0")
     );
-
-
-  const secs =
-    seconds % 60;
-
-
-  return (
-
-    String(minutes)
-      .padStart(2, "0")
-
-    +
-
-    ":"
-
-    +
-
-    String(secs)
-      .padStart(2, "0")
-
-  );
-
 }
-
 
 
 /* =========================================================
@@ -929,133 +1299,120 @@ function formatTime(seconds) {
 
 function buildRoutineList() {
 
-  routineList.innerHTML = "";
+    routineList.innerHTML = "";
+
+    routine.forEach(
+        (exercise, index) => {
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+            item.className =
+                "exercise-item pending";
+
+            item.id =
+                "exercise-" + index;
 
 
-  routine.forEach(
-    (exercise, i) => {
+            item.innerHTML = `
+
+                <div class="exercise-top">
+
+                    <span class="status">
+                        ○
+                    </span>
+
+                    <span class="exercise-name">
+                        ${exercise.name}
+                    </span>
+
+                </div>
+
+                <div class="progress-container">
+
+                    <div
+                        class="progress-bar"
+                        id="progress-${index}">
+                    </div>
+
+                </div>
+            `;
 
 
-      const item =
-        document.createElement(
-          "div"
-        );
+            /*
+               Clicking an exercise immediately
+               changes the same YouTube player.
+            */
+
+            item.addEventListener(
+                "click",
+                () => {
+
+                    selectExercise(
+                        index
+                    );
+
+                }
+            );
 
 
-      item.className =
-        "exercise-item pending";
-
-
-      item.id =
-        "exercise-" + i;
-
-
-      item.innerHTML = `
-
-        <span class="status">
-          ○
-        </span>
-
-        <span>
-          ${exercise.name}
-        </span>
-
-        <div class="progress-container">
-
-          <div
-            class="progress-bar"
-            id="progress-${i}">
-          </div>
-
-        </div>
-
-      `;
-
-
-      /*
-         Clicking an exercise in
-         the roadmap immediately
-         loads its video.
-
-         It remains inside this page.
-      */
-
-      item.addEventListener(
-        "click",
-        () => {
-
-          selectExercise(i);
+            routineList.appendChild(
+                item
+            );
 
         }
-      );
+    );
 
 
-      routineList.appendChild(
-        item
-      );
-
-    }
-  );
-
-
-  updateRoutineList();
-
+    updateRoutineList();
 }
-
 
 
 /* =========================================================
-   SELECT EXERCISE FROM ROADMAP
+   SELECT EXERCISE
 ========================================================= */
 
-function selectExercise(newIndex) {
+function selectExercise(index) {
+
+    clearInterval(timer);
+
+    window.speechSynthesis.cancel();
+
+    currentIndex =
+        index;
+
+    phase =
+        "work";
+
+    timeLeft =
+        routine[
+            currentIndex
+        ].work;
+
+    workoutStarted =
+        true;
+
+    paused =
+        true;
+
+    playPauseButton.textContent =
+        "▶";
 
 
-  clearInterval(timer);
+    /*
+       Change the video in the SAME player.
+    */
+
+    loadExerciseVideo(
+        currentIndex,
+        false
+    );
 
 
-  window.speechSynthesis.cancel();
-
-
-  idx =
-    newIndex;
-
-
-  phase =
-    "work";
-
-
-  timeLeft =
-    routine[idx].work;
-
-
-  workoutStarted =
-    true;
-
-
-  paused =
-    true;
-
-
-  playPauseButton.textContent =
-    "▶";
-
-
-  /*
-     Change video in SAME player.
-  */
-
-  loadVideo();
-
-  if (youtubeReady && player) {
-    player.playVideo();
-  }
-
-
-  updateDisplay();
-
+    updateDisplay();
 }
-
 
 
 /* =========================================================
@@ -1064,279 +1421,246 @@ function selectExercise(newIndex) {
 
 function updateRoutineList() {
 
+    routine.forEach(
+        (exercise, index) => {
 
-  routine.forEach(
-    (exercise, i) => {
+            const item =
+                document.getElementById(
+                    "exercise-" + index
+                );
 
+            if (!item) {
+                return;
+            }
 
-      const item =
-        document.getElementById(
-          "exercise-" + i
-        );
+            const status =
+                item.querySelector(
+                    ".status"
+                );
 
-
-      if (!item)
-        return;
-
-
-      const progress =
-        document.getElementById(
-          "progress-" + i
-        );
-
-
-      const status =
-        item.querySelector(
-          ".status"
-        );
+            const progress =
+                document.getElementById(
+                    "progress-" + index
+                );
 
 
-      item.classList.remove(
-        "active",
-        "completed",
-        "pending"
-      );
-
-
-      /* -----------------------------------------------
-         COMPLETED
-      ------------------------------------------------ */
-
-      if (i < idx) {
-
-
-        item.classList.add(
-          "completed"
-        );
-
-
-        status.textContent =
-          "✓";
-
-
-        progress.style.width =
-          "100%";
-
-      }
-
-
-      /* -----------------------------------------------
-         CURRENT
-      ------------------------------------------------ */
-
-      else if (i === idx) {
-
-
-        item.classList.add(
-          "active"
-        );
-
-
-        status.textContent =
-          "●";
-
-
-        if (
-          phase === "work" &&
-          routine[idx].work > 0
-        ) {
-
-
-          const completed =
-            routine[idx].work -
-            timeLeft;
-
-
-          const percentage =
-
-            Math.min(
-              100,
-
-              Math.max(
-                0,
-
-                completed /
-                routine[idx].work *
-                100
-              )
-
+            item.classList.remove(
+                "active",
+                "completed",
+                "pending"
             );
 
 
-          progress.style.width =
-            percentage + "%";
+            /*
+               COMPLETED
+            */
+
+            if (
+                index < currentIndex
+            ) {
+
+                item.classList.add(
+                    "completed"
+                );
+
+                status.textContent =
+                    "✓";
+
+                progress.style.width =
+                    "100%";
+
+            }
+
+
+            /*
+               CURRENT
+            */
+
+            else if (
+                index === currentIndex
+            ) {
+
+                item.classList.add(
+                    "active"
+                );
+
+                status.textContent =
+                    "●";
+
+
+                if (
+                    phase === "work"
+                ) {
+
+                    const completed =
+                        exercise.work -
+                        timeLeft;
+
+                    const percentage =
+                        Math.min(
+                            100,
+                            Math.max(
+                                0,
+                                (
+                                    completed /
+                                    exercise.work
+                                ) * 100
+                            )
+                        );
+
+                    progress.style.width =
+                        percentage + "%";
+
+                }
+
+                else {
+
+                    progress.style.width =
+                        "0%";
+
+                }
+
+
+                /*
+                   Keep current exercise
+                   visible in roadmap.
+                */
+
+                item.scrollIntoView({
+
+                    behavior: "smooth",
+
+                    block: "center"
+
+                });
+
+            }
+
+
+            /*
+               PENDING
+            */
+
+            else {
+
+                item.classList.add(
+                    "pending"
+                );
+
+                status.textContent =
+                    "○";
+
+                progress.style.width =
+                    "0%";
+
+            }
 
         }
-
-        else {
-
-          progress.style.width =
-            "0%";
-
-        }
-
-
-        item.scrollIntoView({
-
-          behavior: "smooth",
-
-          block: "center"
-
-        });
-
-      }
-
-
-      /* -----------------------------------------------
-         PENDING
-      ------------------------------------------------ */
-
-      else {
-
-
-        item.classList.add(
-          "pending"
-        );
-
-
-        status.textContent =
-          "○";
-
-
-        progress.style.width =
-          "0%";
-
-      }
-
-    }
-  );
-
+    );
 }
 
 
-
 /* =========================================================
-   UPDATE MAIN DISPLAY
+   UPDATE DISPLAY
 ========================================================= */
 
 function updateDisplay() {
 
+    const exercise =
+        routine[
+            currentIndex
+        ];
 
-  const ex =
-    routine[idx];
-
-
-  if (!ex)
-    return;
-
-
-  /* -----------------------------------------------
-     PREPARE
-  ------------------------------------------------ */
-
-  if (
-    phase === "prepare"
-  ) {
+    if (!exercise) {
+        return;
+    }
 
 
-    exerciseElement.textContent =
+    if (
+        phase === "prepare"
+    ) {
 
-      "Prepare for " +
+        exerciseElement.textContent =
 
-      ex.name +
+            "Prepare for " +
 
-      " (" +
+            exercise.name +
 
-      (idx + 1) +
+            " (" +
 
-      "/" +
+            (currentIndex + 1) +
 
-      routine.length +
+            "/" +
 
-      ")";
+            routine.length +
 
-  }
+            ")";
 
-
-  /* -----------------------------------------------
-     WORK
-  ------------------------------------------------ */
-
-  else if (
-    phase === "work"
-  ) {
+    }
 
 
-    exerciseElement.textContent =
+    else if (
+        phase === "work"
+    ) {
 
-      ex.name +
+        exerciseElement.textContent =
 
-      " (" +
+            exercise.name +
 
-      (idx + 1) +
+            " (" +
 
-      "/" +
+            (currentIndex + 1) +
 
-      routine.length +
+            "/" +
 
-      ")";
+            routine.length +
 
-  }
+            ")";
 
-
-  /* -----------------------------------------------
-     REST
-  ------------------------------------------------ */
-
-  else if (
-    phase === "rest"
-  ) {
+    }
 
 
-    exerciseElement.textContent =
+    else if (
+        phase === "rest"
+    ) {
 
-      "Rest — Next: " +
-
-      (
-
-        routine[idx + 1]
-
-          ? routine[idx + 1].name
-
-          : "Workout Complete"
-
-      );
-
-  }
+        const next =
+            routine[
+                currentIndex + 1
+            ];
 
 
-  /*
-     Always show source.
-  */
+        exerciseElement.textContent =
 
-  sourceElement.textContent =
+            "Rest — Next: " +
 
-    "How to: " +
+            (
+                next
+                    ? next.name
+                    : "Workout Complete"
+            );
 
-    ex.source;
-
-
-  timeElement.textContent =
-    formatTime(
-      timeLeft
-    );
+    }
 
 
-  totalTimeElement.textContent =
-    formatTime(
-      elapsedSeconds
-    );
+    sourceElement.textContent =
+        "How to: DAREBEE";
 
 
-  updateRoutineList();
+    timeElement.textContent =
+        formatTime(
+            timeLeft
+        );
 
+
+    totalTimeElement.textContent =
+        formatTime(
+            elapsedSeconds
+        );
+
+
+    updateRoutineList();
 }
-
 
 
 /* =========================================================
@@ -1345,50 +1669,55 @@ function updateDisplay() {
 
 function startTimer() {
 
+    clearInterval(timer);
 
-  clearInterval(timer);
+    currentIndex = 0;
 
+    phase =
+        "prepare";
 
-  idx = 0;
+    paused =
+        false;
 
-  phase = "prepare";
+    workoutStarted =
+        true;
 
-  paused = false;
+    elapsedSeconds =
+        0;
 
-  workoutStarted = true;
-
-  elapsedSeconds = 0;
-
-  timeLeft = 5;
-
-
-  playPauseButton.textContent =
-    "❚❚";
-
-
-  loadVideo();
+    timeLeft =
+        5;
 
 
-  updateDisplay();
+    playPauseButton.textContent =
+        "❚❚";
 
 
-  speak(
+    /*
+       Load first DAREBEE video.
+    */
 
-    "Prepare for " +
-
-    routine[0].name
-
-  );
-
-
-  timer =
-    setInterval(
-      tick,
-      1000
+    loadExerciseVideo(
+        0,
+        true
     );
 
-}
 
+    updateDisplay();
+
+
+    speak(
+        "Prepare for " +
+        routine[0].name
+    );
+
+
+    timer =
+        setInterval(
+            tick,
+            1000
+        );
+}
 
 
 /* =========================================================
@@ -1397,225 +1726,218 @@ function startTimer() {
 
 function togglePause() {
 
+    /*
+       First press starts workout.
+    */
 
-  if (
-    !workoutStarted
-  ) {
+    if (
+        !workoutStarted
+    ) {
 
-    startTimer();
+        startTimer();
 
-    return;
-
-  }
-
-
-  paused =
-    !paused;
-
-
-  if (paused) {
-
-
-    playPauseButton.textContent =
-      "▶";
-
-
-    window.speechSynthesis.cancel();
-
-    if (youtubeReady && player) {
-      player.pauseVideo();
+        return;
     }
 
-  }
 
-  else {
+    paused =
+        !paused;
 
 
-    playPauseButton.textContent =
-      "❚❚";
+    if (paused) {
 
-    if (youtubeReady && player) {
-      player.playVideo();
+        playPauseButton.textContent =
+            "▶";
+
+        window.speechSynthesis.cancel();
+
+
+        if (
+            youtubeReady &&
+            player
+        ) {
+
+            player.pauseVideo();
+
+        }
+
     }
 
-  }
+    else {
 
+        playPauseButton.textContent =
+            "❚❚";
+
+
+        if (
+            youtubeReady &&
+            player
+        ) {
+
+            player.playVideo();
+
+        }
+
+    }
 }
 
 
-
 /* =========================================================
-   NEXT
+   NEXT MOVE
 ========================================================= */
 
 function skipMove() {
 
+    if (
+        !workoutStarted
+    ) {
+        return;
+    }
 
-  if (
-    !workoutStarted
-  )
-    return;
+    clearInterval(timer);
 
-
-  clearInterval(timer);
-
-
-  window.speechSynthesis.cancel();
+    window.speechSynthesis.cancel();
 
 
-  idx++;
+    currentIndex++;
 
 
-  if (
-    idx >= routine.length
-  ) {
+    if (
+        currentIndex >=
+        routine.length
+    ) {
 
+        finishWorkout();
 
-    finishWorkout();
+        return;
+    }
 
-    return;
-
-  }
-
-
-  phase =
-    "work";
-
-
-  timeLeft =
-    routine[idx].work;
-
-
-  paused =
-    false;
-
-
-  playPauseButton.textContent =
-    "❚❚";
-
-
-  /*
-     SAME YouTube player.
-  */
-
-  loadVideo();
-
-
-  updateDisplay();
-
-
-  speak(
-
-    "Start " +
-
-    routine[idx].name
-
-  );
-
-
-  timer =
-    setInterval(
-      tick,
-      1000
-    );
-
-}
-
-
-
-/* =========================================================
-   PREVIOUS
-========================================================= */
-
-function previousMove() {
-
-
-  if (
-    !workoutStarted
-  )
-    return;
-
-
-  clearInterval(timer);
-
-
-  window.speechSynthesis.cancel();
-
-
-  if (
-    idx <= 0
-  ) {
-
-
-    idx = 0;
 
     phase =
-      "prepare";
+        "work";
 
     timeLeft =
-      5;
+        routine[
+            currentIndex
+        ].work;
+
+    paused =
+        false;
 
 
-    loadVideo();
+    playPauseButton.textContent =
+        "❚❚";
+
+
+    loadExerciseVideo(
+        currentIndex,
+        true
+    );
 
 
     updateDisplay();
 
 
-    timer =
-      setInterval(
-        tick,
-        1000
-      );
-
-
-    return;
-
-  }
-
-
-  idx--;
-
-
-  phase =
-    "work";
-
-
-  timeLeft =
-    routine[idx].work;
-
-
-  paused =
-    false;
-
-
-  playPauseButton.textContent =
-    "❚❚";
-
-
-  loadVideo();
-
-
-  updateDisplay();
-
-
-  speak(
-
-    "Start " +
-
-    routine[idx].name
-
-  );
-
-
-  timer =
-    setInterval(
-      tick,
-      1000
+    speak(
+        "Start " +
+        routine[
+            currentIndex
+        ].name
     );
 
+
+    timer =
+        setInterval(
+            tick,
+            1000
+        );
 }
 
+
+/* =========================================================
+   PREVIOUS MOVE
+========================================================= */
+
+function previousMove() {
+
+    if (
+        !workoutStarted
+    ) {
+        return;
+    }
+
+    clearInterval(timer);
+
+    window.speechSynthesis.cancel();
+
+
+    if (
+        currentIndex <= 0
+    ) {
+
+        currentIndex = 0;
+
+        phase =
+            "prepare";
+
+        timeLeft =
+            5;
+
+
+        loadExerciseVideo(
+            0,
+            false
+        );
+
+
+        updateDisplay();
+
+        return;
+    }
+
+
+    currentIndex--;
+
+
+    phase =
+        "work";
+
+    timeLeft =
+        routine[
+            currentIndex
+        ].work;
+
+    paused =
+        false;
+
+
+    playPauseButton.textContent =
+        "❚❚";
+
+
+    loadExerciseVideo(
+        currentIndex,
+        true
+    );
+
+
+    updateDisplay();
+
+
+    speak(
+        "Start " +
+        routine[
+            currentIndex
+        ].name
+    );
+
+
+    timer =
+        setInterval(
+            tick,
+            1000
+        );
+}
 
 
 /* =========================================================
@@ -1624,210 +1946,205 @@ function previousMove() {
 
 function resetTimer() {
 
+    clearInterval(timer);
 
-  clearInterval(timer);
-
-
-  window.speechSynthesis.cancel();
+    window.speechSynthesis.cancel();
 
 
-  idx = 0;
+    currentIndex =
+        0;
 
-  phase = "prepare";
+    phase =
+        "prepare";
 
-  timeLeft = 0;
+    timeLeft =
+        0;
 
-  elapsedSeconds = 0;
+    elapsedSeconds =
+        0;
 
-  paused = false;
+    paused =
+        false;
 
-  workoutStarted = false;
-
-
-  playPauseButton.textContent =
-    "▶";
-
-
-  exerciseElement.textContent =
-    "Press Play";
+    workoutStarted =
+        false;
 
 
-  sourceElement.textContent =
-    "Exercise demonstration";
+    playPauseButton.textContent =
+        "▶";
 
 
-  timeElement.textContent =
-    "00:00";
+    exerciseElement.textContent =
+        "Press Play";
 
 
-  totalTimeElement.textContent =
-    "00:00";
+    sourceElement.textContent =
+        "DAREBEE Exercise Library";
 
 
-  /*
-     Return player to first
-     exercise.
-  */
-
-  loadVideo();
+    timeElement.textContent =
+        "00:00";
 
 
-  updateRoutineList();
+    totalTimeElement.textContent =
+        "00:00";
 
+
+    loadExerciseVideo(
+        0,
+        false
+    );
+
+
+    updateRoutineList();
 }
 
 
-
 /* =========================================================
-   TIMER TICK
+   TIMER
 ========================================================= */
 
 function tick() {
 
+    if (paused) {
+        return;
+    }
 
-  if (paused)
-    return;
 
+    elapsedSeconds++;
 
-  elapsedSeconds++;
 
+    if (
+        timeLeft > 0
+    ) {
 
-  if (
-    timeLeft > 0
-  ) {
+        timeLeft--;
 
-    timeLeft--;
+    }
 
-  }
 
+    /*
+       PREPARE
+    */
 
-  /* -----------------------------------------------
-     PREPARE COUNTDOWN
-  ------------------------------------------------ */
+    if (
 
-  if (
+        phase === "prepare" &&
 
-    phase === "prepare" &&
+        timeLeft <= 3 &&
 
-    timeLeft <= 3 &&
+        timeLeft > 0
 
-    timeLeft > 0
+    ) {
 
-  ) {
+        speak(
+            String(timeLeft)
+        );
 
-    speak(
-      timeLeft.toString()
-    );
+    }
 
-  }
 
+    if (
 
-  if (
+        phase === "prepare" &&
 
-    phase === "prepare" &&
+        timeLeft === 0
 
-    timeLeft === 0
+    ) {
 
-  ) {
+        nextPhase();
 
-    nextPhase();
+        return;
+    }
 
-    return;
 
-  }
+    /*
+       WORK
+    */
 
+    if (
 
-  /* -----------------------------------------------
-     WORK
-  ------------------------------------------------ */
+        phase === "work" &&
 
-  if (
+        timeLeft === 10
 
-    phase === "work" &&
+    ) {
 
-    timeLeft === 10
+        speak(
+            "10 seconds left"
+        );
 
-  ) {
+    }
 
-    speak(
-      "10 seconds left"
-    );
 
-  }
+    if (
 
+        phase === "work" &&
 
-  if (
+        timeLeft <= 3 &&
 
-    phase === "work" &&
+        timeLeft > 0
 
-    timeLeft <= 3 &&
+    ) {
 
-    timeLeft > 0
+        speak(
+            String(timeLeft)
+        );
 
-  ) {
+    }
 
-    speak(
-      timeLeft.toString()
-    );
 
-  }
+    if (
 
+        phase === "work" &&
 
-  if (
+        timeLeft === 0
 
-    phase === "work" &&
+    ) {
 
-    timeLeft === 0
+        nextPhase();
 
-  ) {
+        return;
+    }
 
-    nextPhase();
 
-    return;
+    /*
+       REST
+    */
 
-  }
+    if (
 
+        phase === "rest" &&
 
-  /* -----------------------------------------------
-     REST
-  ------------------------------------------------ */
+        timeLeft <= 3 &&
 
-  if (
+        timeLeft > 0
 
-    phase === "rest" &&
+    ) {
 
-    timeLeft <= 3 &&
+        speak(
+            String(timeLeft)
+        );
 
-    timeLeft > 0
+    }
 
-  ) {
 
-    speak(
-      timeLeft.toString()
-    );
+    if (
 
-  }
+        phase === "rest" &&
 
+        timeLeft === 0
 
-  if (
+    ) {
 
-    phase === "rest" &&
+        nextPhase();
 
-    timeLeft === 0
+        return;
+    }
 
-  ) {
 
-    nextPhase();
-
-    return;
-
-  }
-
-
-  updateDisplay();
-
+    updateDisplay();
 }
-
 
 
 /* =========================================================
@@ -1837,143 +2154,127 @@ function tick() {
 function nextPhase() {
 
 
-  /* -----------------------------------------------
-     PREPARE → WORK
-  ------------------------------------------------ */
-
-  if (
-    phase === "prepare"
-  ) {
-
-
-    phase =
-      "work";
-
-
-    timeLeft =
-      routine[idx].work;
-
-
-    updateDisplay();
-
-
-    speak(
-
-      "Start " +
-
-      routine[idx].name
-
-    );
-
-
-    return;
-
-  }
-
-
-  /* -----------------------------------------------
-     WORK → REST
-  ------------------------------------------------ */
-
-  if (
-    phase === "work"
-  ) {
-
-
-    const ex =
-      routine[idx];
-
-
-    if (
-      ex.rest === 0
-    ) {
-
-
-      goToNextExercise();
-
-      return;
-
-    }
-
-
-    phase =
-      "rest";
-
-
-    timeLeft =
-      ex.rest;
-
-
-    updateDisplay();
-
-
-    speak("Rest");
-
-
     /*
-       Tell user the next exercise.
+       PREPARE → WORK
     */
 
     if (
-      idx + 1 <
-      routine.length
+        phase === "prepare"
     ) {
 
+        phase =
+            "work";
 
-      setTimeout(
-        () => {
-
-
-          if (
-
-            phase === "rest" &&
-
-            !paused
-
-          ) {
+        timeLeft =
+            routine[
+                currentIndex
+            ].work;
 
 
-            speak(
+        updateDisplay();
 
-              "Next exercise is " +
 
-              routine[
-                idx + 1
-              ].name
+        speak(
+            "Start " +
+            routine[
+                currentIndex
+            ].name
+        );
 
-            );
 
-          }
-
-        },
-
-        2000
-
-      );
-
+        return;
     }
 
 
-    return;
+    /*
+       WORK → REST
+    */
 
-  }
+    if (
+        phase === "work"
+    ) {
+
+        const exercise =
+            routine[
+                currentIndex
+            ];
 
 
-  /* -----------------------------------------------
-     REST → NEXT
-  ------------------------------------------------ */
+        if (
+            exercise.rest === 0
+        ) {
 
-  if (
-    phase === "rest"
-  ) {
+            goToNextExercise();
+
+            return;
+        }
 
 
-    goToNextExercise();
+        phase =
+            "rest";
 
-  }
+        timeLeft =
+            exercise.rest;
 
+
+        updateDisplay();
+
+
+        speak("Rest");
+
+
+        /*
+           Announce next exercise.
+        */
+
+        if (
+            currentIndex + 1 <
+            routine.length
+        ) {
+
+            setTimeout(
+                () => {
+
+                    if (
+
+                        phase === "rest" &&
+
+                        !paused
+
+                    ) {
+
+                        speak(
+                            "Next exercise is " +
+
+                            routine[
+                                currentIndex + 1
+                            ].name
+                        );
+
+                    }
+
+                },
+                2000
+            );
+
+        }
+
+        return;
+    }
+
+
+    /*
+       REST → NEXT
+    */
+
+    if (
+        phase === "rest"
+    ) {
+
+        goToNextExercise();
+
+    }
 }
-
 
 
 /* =========================================================
@@ -1982,52 +2283,45 @@ function nextPhase() {
 
 function goToNextExercise() {
 
-
-  idx++;
-
-
-  if (
-    idx >= routine.length
-  ) {
+    currentIndex++;
 
 
-    finishWorkout();
+    if (
+        currentIndex >=
+        routine.length
+    ) {
 
-    return;
+        finishWorkout();
 
-  }
-
-
-  phase =
-    "work";
-
-
-  timeLeft =
-    routine[idx].work;
+        return;
+    }
 
 
-  /*
-     Change video.
+    phase =
+        "work";
 
-     SAME PLAYER.
-  */
-
-  loadVideo();
-
-
-  updateDisplay();
+    timeLeft =
+        routine[
+            currentIndex
+        ].work;
 
 
-  speak(
+    loadExerciseVideo(
+        currentIndex,
+        true
+    );
 
-    "Start " +
 
-    routine[idx].name
+    updateDisplay();
 
-  );
 
+    speak(
+        "Start " +
+        routine[
+            currentIndex
+        ].name
+    );
 }
-
 
 
 /* =========================================================
@@ -2036,101 +2330,95 @@ function goToNextExercise() {
 
 function finishWorkout() {
 
+    clearInterval(timer);
 
-  clearInterval(timer);
-
-
-  window.speechSynthesis.cancel();
+    window.speechSynthesis.cancel();
 
 
-  workoutStarted =
-    false;
+    workoutStarted =
+        false;
+
+    paused =
+        false;
 
 
-  paused =
-    false;
+    playPauseButton.textContent =
+        "▶";
 
 
-  playPauseButton.textContent =
-    "▶";
+    exerciseElement.textContent =
+        "Workout Complete!";
 
 
-  exerciseElement.textContent =
-    "Workout Complete!";
+    sourceElement.textContent =
+        "";
 
 
-  sourceElement.textContent =
-    "";
+    timeElement.textContent =
+        "00:00";
 
 
-  timeElement.textContent =
-    "00:00";
+    totalTimeElement.textContent =
+        formatTime(
+            elapsedSeconds
+        );
 
 
-  totalTimeElement.textContent =
-    formatTime(
-      elapsedSeconds
+    /*
+       Mark everything complete.
+    */
+
+    routine.forEach(
+        (exercise, index) => {
+
+            const item =
+                document.getElementById(
+                    "exercise-" + index
+                );
+
+            if (!item) {
+                return;
+            }
+
+
+            const status =
+                item.querySelector(
+                    ".status"
+                );
+
+
+            const progress =
+                document.getElementById(
+                    "progress-" + index
+                );
+
+
+            item.classList.remove(
+                "active",
+                "pending"
+            );
+
+
+            item.classList.add(
+                "completed"
+            );
+
+
+            status.textContent =
+                "✓";
+
+
+            progress.style.width =
+                "100%";
+
+        }
     );
 
 
-  /*
-     Mark every exercise complete.
-  */
-
-  routine.forEach(
-    (exercise, i) => {
-
-
-      const item =
-        document.getElementById(
-          "exercise-" + i
-        );
-
-
-      if (!item)
-        return;
-
-
-      const status =
-        item.querySelector(
-          ".status"
-        );
-
-
-      const progress =
-        document.getElementById(
-          "progress-" + i
-        );
-
-
-      item.classList.remove(
-        "active",
-        "pending"
-      );
-
-
-      item.classList.add(
-        "completed"
-      );
-
-
-      status.textContent =
-        "✓";
-
-
-      progress.style.width =
-        "100%";
-
-    }
-  );
-
-
-  speak(
-    "Workout complete"
-  );
-
+    speak(
+        "Workout complete"
+    );
 }
-
 
 
 /* =========================================================
@@ -2144,3 +2432,4 @@ buildRoutineList();
 </body>
 
 </html>
+```
