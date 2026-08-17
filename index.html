@@ -1,1958 +1,602 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<meta name="referrer" content="strict-origin-when-cross-origin">
-
-<title>Yalla Workout</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Interval Trainer — DAREBEE Circuit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
-
-* {
-    box-sizing: border-box;
-}
-
-html,
-body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    min-height: 100%;
-}
-
-body {
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-    background: #111;
-    color: #eee;
-
-    overflow: hidden;
-}
-
-.app {
-    display: flex;
-    width: 100%;
-    height: 100vh;
-}
-
-
-/* =========================================================
-   SIDEBAR
-========================================================= */
-
-.sidebar {
-
-    width: 340px;
-    flex-shrink: 0;
-
-    background: #181818;
-
-    border-right: 1px solid #292929;
-
-    overflow-y: auto;
-
-    padding: 18px 14px;
-}
-
-.exercise-item {
-
-    position: relative;
-
-    padding: 9px 10px;
-
-    margin-bottom: 3px;
-
-    border-radius: 6px;
-
-    color: #555;
-
-    font-size: 14px;
-
-    cursor: pointer;
-
-    user-select: none;
-
-    transition:
-        background 0.15s ease,
-        color 0.15s ease;
-}
-
-.exercise-item:hover {
-    background: #202020;
-    color: #aaa;
-}
-
-.exercise-item.active {
-    background: #242424;
-    color: #eee;
-}
-
-.exercise-item.completed {
-    color: #777;
-}
-
-.exercise-item.pending {
-    color: #555;
-}
-
-.exercise-top {
-    display: flex;
-    align-items: center;
-}
-
-.status {
-
-    width: 24px;
-
-    flex-shrink: 0;
-
-    margin-right: 4px;
-
-    text-align: center;
-
-    color: inherit;
-}
-
-.exercise-name {
-    flex: 1;
-}
-
-.progress-container {
-
-    height: 3px;
-
-    margin:
-        7px
-        0
-        0
-        28px;
-
-    background: #303030;
-
-    border-radius: 3px;
-
-    overflow: hidden;
-}
-
-.progress-bar {
-
-    width: 0%;
-    height: 100%;
-
-    background: #eee;
-
-    transition: width 0.2s linear;
-}
-
-
-/* =========================================================
-   MAIN
-========================================================= */
-
-.main {
-
-    flex: 1;
-
-    min-width: 0;
-
-    height: 100vh;
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-    justify-content: center;
-
-    padding: 25px 35px;
-
-    overflow-y: auto;
-}
-
-#exercise {
-
-    width: 100%;
-
-    max-width: 800px;
-
-    margin: 0 0 7px;
-
-    text-align: center;
-
-    font-size: 28px;
-
-    font-weight: 600;
-}
-
-#source {
-
-    margin-bottom: 18px;
-
-    color: #666;
-
-    font-size: 12px;
-}
-
-
-/* =========================================================
-   VIDEO
-========================================================= */
-
-.video-wrapper {
-
-    width: min(760px, 100%);
-
-    margin-bottom: 8px;
-}
-
-.video-frame {
-
-    position: relative;
-
-    width: 100%;
-
-    aspect-ratio: 16 / 9;
-
-    background: #000;
-
-    border-radius: 10px;
-
-    overflow: hidden;
-
-    box-shadow:
-        0 10px 35px rgba(0,0,0,0.35);
-}
-
-#youtubePlayer {
-
-    position: absolute;
-
-    inset: 0;
-
-    width: 100%;
-
-    height: 100%;
-}
-
-.video-placeholder {
-
-    position: absolute;
-
-    inset: 0;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    background: #090909;
-
-    color: #555;
-
-    font-size: 13px;
-
-    z-index: 2;
-
-    pointer-events: none;
-}
-
-.video-placeholder.hidden {
-    display: none;
-}
-
-.player-status {
-
-    width: 100%;
-
-    max-width: 760px;
-
-    height: 18px;
-
-    margin-bottom: 12px;
-
-    text-align: right;
-
-    color: #444;
-
-    font-size: 10px;
-}
-
-
-/* =========================================================
-   TIMER
-========================================================= */
-
-#time {
-
-    margin: 0 0 8px;
-
-    font-size: 72px;
-
-    line-height: 1;
-
-    font-weight: 700;
-
-    letter-spacing: 2px;
-}
-
-#totalLabel {
-
-    margin-top: 10px;
-
-    color: #555;
-
-    font-size: 10px;
-
-    letter-spacing: 1.5px;
-}
-
-#totalTime {
-
-    margin: 4px 0 22px;
-
-    font-size: 25px;
-
-    color: #888;
-}
-
-
-/* =========================================================
-   CONTROLS
-========================================================= */
-
-.controls {
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    gap: 9px;
-}
-
-.controls button {
-
-    width: 62px;
-    height: 52px;
-
-    border: 0;
-
-    border-radius: 8px;
-
-    background: #eee;
-
-    color: #111;
-
-    font-size: 23px;
-
-    cursor: pointer;
-
-    transition:
-        transform 0.08s ease,
-        background 0.15s ease;
-}
-
-.controls button:hover {
-    background: #ccc;
-}
-
-.controls button:active {
-    transform: scale(0.94);
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media (max-width: 700px) {
-
-    body {
-        overflow: auto;
-    }
-
-    .app {
-        height: auto;
-        min-height: 100vh;
-        flex-direction: column;
-    }
-
-    .sidebar {
-
-        width: 100%;
-
-        height: 220px;
-
-        border-right: 0;
-
-        border-bottom: 1px solid #292929;
-    }
-
-    .main {
-
-        min-height: calc(100vh - 220px);
-
-        height: auto;
-
-        padding: 20px 15px;
-    }
-
-    #exercise {
-        font-size: 21px;
-    }
-
-    #time {
-        font-size: 55px;
-    }
-
-    .controls button {
-        width: 55px;
-        height: 48px;
-    }
-}
-
+  :root{
+    --bg:#0e1015;
+    --surface:#171a22;
+    --surface-2:#1f232d;
+    --line:#2a2f3b;
+    --text:#f2f1ed;
+    --text-dim:#8d94a3;
+    --text-faint:#5b6172;
+    --work:#ff5a36;
+    --work-dim:#3a2018;
+    --rest:#4fd1c5;
+    --rest-dim:#152827;
+    --warmup:#ffb84d;
+    --main:#ff5a36;
+    --cooldown:#4fd1c5;
+    --done:#5bd97a;
+    --radius:16px;
+    --radius-sm:10px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:radial-gradient(1200px 600px at 50% -10%, #1a1e28 0%, var(--bg) 55%);
+    color:var(--text);
+    font-family:'Space Grotesk', system-ui, sans-serif;
+    min-height:100vh;
+    padding:20px 14px 60px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .app{max-width:520px;margin:0 auto;}
+
+  /* ---- header ---- */
+  header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;gap:10px;}
+  .eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-faint);font-weight:600;}
+  .title{font-size:15px;font-weight:700;margin-top:2px;}
+  .block-pill{
+    font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+    padding:6px 12px;border-radius:999px;white-space:nowrap;
+    background:var(--surface-2);border:1px solid var(--line);
+  }
+  .counter{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-dim);margin-top:4px;text-align:right;}
+
+  /* ---- video ---- */
+  .video-wrap{
+    position:relative;border-radius:var(--radius);overflow:hidden;
+    background:#000;border:1px solid var(--line);
+    aspect-ratio:16/9;transition:box-shadow .4s ease;
+  }
+  .video-wrap iframe{width:100%;height:100%;border:0;display:block;}
+  .video-wrap.phase-work{box-shadow:0 0 0 2px var(--work) inset;}
+  .video-wrap.phase-rest{box-shadow:0 0 0 2px var(--rest) inset;}
+
+  /* ---- move info ---- */
+  .move-info{margin-top:16px;}
+  .move-name{font-size:26px;font-weight:700;line-height:1.15;}
+  .tags{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;align-items:center;}
+  .tag{
+    font-size:11px;font-weight:600;color:var(--text-dim);
+    background:var(--surface);border:1px solid var(--line);
+    padding:4px 9px;border-radius:999px;letter-spacing:.02em;
+  }
+  .diff-dots{display:inline-flex;gap:3px;align-items:center;}
+  .diff-dots span{width:6px;height:6px;border-radius:50%;background:var(--line);}
+  .diff-dots span.on{background:var(--work);}
+
+  /* ---- timer ---- */
+  .timer-card{
+    margin-top:18px;background:var(--surface);border:1px solid var(--line);
+    border-radius:var(--radius);padding:22px 20px 18px;text-align:center;
+    transition:background .4s ease, border-color .4s ease;
+  }
+  .timer-card.phase-work{background:linear-gradient(180deg, var(--work-dim), var(--surface) 70%);border-color:#4a2a1f;}
+  .timer-card.phase-rest{background:linear-gradient(180deg, var(--rest-dim), var(--surface) 70%);border-color:#1f3d3a;}
+  .phase-label{
+    font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--text-dim);
+  }
+  .phase-label.work{color:var(--work);}
+  .phase-label.rest{color:var(--rest);}
+  .clock{
+    font-family:'JetBrains Mono',monospace;font-weight:700;
+    font-size:64px;line-height:1;letter-spacing:.01em;margin:8px 0 14px;
+    font-variant-numeric:tabular-nums;
+  }
+  .bar-track{height:6px;border-radius:999px;background:var(--surface-2);overflow:hidden;}
+  .bar-fill{height:100%;border-radius:999px;background:var(--work);transition:width 1s linear, background .3s ease;}
+  .bar-fill.rest{background:var(--rest);}
+
+  /* ---- controls ---- */
+  .controls{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:20px;}
+  .ctrl-btn{
+    display:flex;align-items:center;justify-content:center;
+    background:var(--surface);border:1px solid var(--line);color:var(--text);
+    border-radius:50%;cursor:pointer;transition:transform .12s ease, background .15s ease, border-color .15s ease;
+  }
+  .ctrl-btn:hover{border-color:#3a4152;}
+  .ctrl-btn:active{transform:scale(.93);}
+  .ctrl-btn.sm{width:52px;height:52px;}
+  .ctrl-btn.play{width:72px;height:72px;background:var(--work);border-color:var(--work);color:#160b06;}
+  .ctrl-btn.play svg{width:26px;height:26px;}
+  .ctrl-btn.sm svg{width:20px;height:20px;}
+  .ctrl-btn.reset{color:var(--text-dim);}
+
+  /* ---- list ---- */
+  .list-heading{
+    display:flex;align-items:center;justify-content:space-between;
+    margin:28px 0 10px;
+  }
+  .list-heading h2{font-size:14px;font-weight:700;margin:0;letter-spacing:.02em;}
+  .voice-toggle{
+    display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-dim);
+    background:var(--surface);border:1px solid var(--line);padding:6px 10px;border-radius:999px;cursor:pointer;
+    user-select:none;
+  }
+  .voice-toggle input{accent-color:var(--work);}
+
+  .block-group{margin-bottom:14px;}
+  .block-title{
+    display:flex;align-items:center;gap:8px;
+    font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--text-faint);margin:14px 0 6px;
+  }
+  .block-dot{width:7px;height:7px;border-radius:50%;}
+  .move-row{
+    display:flex;align-items:center;gap:12px;
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);
+    padding:10px 12px;margin-bottom:6px;cursor:pointer;transition:border-color .15s ease, background .15s ease;
+  }
+  .move-row:hover{border-color:#3a4152;}
+  .move-row.current{border-color:var(--work);background:var(--work-dim);}
+  .move-row.done{opacity:.55;}
+  .row-status{
+    width:24px;height:24px;border-radius:50%;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;
+    background:var(--surface-2);border:1px solid var(--line);color:var(--text-dim);
+  }
+  .row-status.done{background:var(--done);border-color:var(--done);color:#0a1f0f;}
+  .row-status.current{background:var(--work);border-color:var(--work);color:#160b06;}
+  .row-main{flex:1;min-width:0;}
+  .row-name{font-size:14px;font-weight:600;}
+  .row-sub{font-size:11px;color:var(--text-dim);margin-top:1px;}
+  .row-time{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-dim);white-space:nowrap;}
+
+  /* ---- settings ---- */
+  details.settings{
+    margin-top:22px;background:var(--surface);border:1px solid var(--line);
+    border-radius:var(--radius);padding:4px 16px;
+  }
+  details.settings summary{
+    cursor:pointer;padding:12px 0;font-size:13px;font-weight:700;
+    list-style:none;display:flex;align-items:center;justify-content:space-between;
+  }
+  details.settings summary::-webkit-details-marker{display:none;}
+  .settings-body{padding:4px 0 16px;}
+  .block-setting{margin-bottom:14px;}
+  .block-setting-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+  .field-row{display:flex;gap:10px;}
+  .field{flex:1;}
+  .field label{font-size:10px;color:var(--text-dim);display:block;margin-bottom:4px;}
+  .field input{
+    width:100%;background:var(--surface-2);border:1px solid var(--line);color:var(--text);
+    border-radius:8px;padding:8px 10px;font-family:'JetBrains Mono',monospace;font-size:13px;
+  }
+  .hint{font-size:11px;color:var(--text-faint);margin-top:10px;line-height:1.5;}
+
+  footer{margin-top:26px;text-align:center;font-size:11px;color:var(--text-faint);line-height:1.6;}
+  footer a{color:var(--text-dim);}
+
+  @media (max-width:380px){
+    .clock{font-size:52px;}
+    .move-name{font-size:22px;}
+  }
 </style>
-
 </head>
-
-
 <body>
-
 <div class="app">
 
-
-<!-- =======================================================
-     SIDEBAR
-======================================================== -->
-
-<aside class="sidebar">
-
-    <div id="routineList"></div>
-
-</aside>
-
-
-<!-- =======================================================
-     MAIN
-======================================================== -->
-
-<main class="main">
-
-    <div id="exercise">
-        Press Play
+  <header>
+    <div>
+      <div class="eyebrow">Interval Trainer</div>
+      <div class="title">DAREBEE Bodyweight Circuit</div>
     </div>
-
-    <div id="source">
-        DAREBEE
+    <div>
+      <div class="block-pill" id="blockPill">Warm-up</div>
+      <div class="counter" id="counter">1 / 10</div>
     </div>
+  </header>
 
+  <div class="video-wrap phase-work" id="videoWrap">
+    <iframe id="videoFrame" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  </div>
 
-    <div class="video-wrapper">
-
-        <div class="video-frame">
-
-            <div id="youtubePlayer"></div>
-
-            <div
-                id="videoPlaceholder"
-                class="video-placeholder">
-
-                YouTube video loading...
-
-            </div>
-
-        </div>
-
+  <div class="move-info">
+    <div class="move-name" id="moveName">Arms Circles</div>
+    <div class="tags">
+      <span class="tag" id="tagFocus">Upper Body</span>
+      <span class="tag" id="tagType">Strength</span>
+      <span class="tag">
+        <span class="diff-dots" id="diffDots"></span>
+      </span>
     </div>
+  </div>
 
+  <div class="timer-card phase-work" id="timerCard">
+    <div class="phase-label work" id="phaseLabel">Work</div>
+    <div class="clock" id="clock">00:30</div>
+    <div class="bar-track"><div class="bar-fill" id="barFill" style="width:100%"></div></div>
+  </div>
 
-    <div
-        id="playerStatus"
-        class="player-status">
+  <div class="controls">
+    <button class="ctrl-btn sm" id="prevBtn" title="Previous move" aria-label="Previous move">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M18 5L9 12l9 7V5z" fill="currentColor"/><rect x="5" y="5" width="2" height="14" fill="currentColor"/></svg>
+    </button>
+    <button class="ctrl-btn play" id="playBtn" title="Play / Pause" aria-label="Play or pause">
+      <svg id="playIcon" viewBox="0 0 24 24" fill="none"><path d="M8 5v14l12-7L8 5z" fill="currentColor"/></svg>
+    </button>
+    <button class="ctrl-btn sm" id="nextBtn" title="Next move" aria-label="Next move">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M6 5l9 7-9 7V5z" fill="currentColor"/><rect x="17" y="5" width="2" height="14" fill="currentColor"/></svg>
+    </button>
+    <button class="ctrl-btn sm reset" id="resetBtn" title="Reset" aria-label="Reset workout">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12a9 9 0 1 1 3 6.7"/><path d="M3 4v6h6"/></svg>
+    </button>
+  </div>
 
-        YouTube player loading...
+  <div class="list-heading">
+    <h2>Your Session</h2>
+    <label class="voice-toggle">
+      <input type="checkbox" id="voiceToggle" checked>
+      Voice cues
+    </label>
+  </div>
 
-    </div>
+  <div id="listContainer"></div>
 
+  <details class="settings">
+    <summary>Block timing <span id="settingsCaret">▾</span></summary>
+    <div class="settings-body" id="settingsBody"></div>
+    <div class="hint">Work/rest is set per block, not per move. Changes apply to intervals you haven't reached yet.</div>
+  </details>
 
-    <div id="time">
-        00:00
-    </div>
-
-
-    <div id="totalLabel">
-        TOTAL ELAPSED
-    </div>
-
-    <div id="totalTime">
-        00:00
-    </div>
-
-
-    <div class="controls">
-
-        <button
-            id="playPauseButton"
-            onclick="togglePause()">
-            ▶
-        </button>
-
-        <button
-            onclick="previousMove()">
-            ‹
-        </button>
-
-        <button
-            onclick="skipMove()">
-            ›
-        </button>
-
-        <button
-            onclick="resetTimer()">
-            ↻
-        </button>
-
-    </div>
-
-</main>
+  <footer>
+    Demo clips pulled from DAREBEE's Video Exercise Library.<br>
+    Full how-to library: <a href="https://darebee.com/library.html" target="_blank" rel="noopener">darebee.com/library.html</a>
+  </footer>
 
 </div>
 
-
-<script src="https://www.youtube.com/iframe_api"></script>
-
-
 <script>
+(function(){
+  "use strict";
 
-/* =========================================================
-   EXACT DAREBEE PLAYLIST SOURCES
-========================================================= */
+  const BLOCK_LABEL = { warmup:"Warm-up", main:"Main Set", cooldown:"Cool-down" };
+  const BLOCK_COLOR  = { warmup:"var(--warmup)", main:"var(--main)", cooldown:"var(--cooldown)" };
 
-const DAREBEE_HOW_TO_PLAYLIST =
-    "PLQSMS0J6JbrLUNzCgI3Sk32Kyio9rq0zA";
+  const MOVES = [
+    { name:"Arms Circles",  videoId:"TBZilgJOzNE", block:"warmup",   focus:"Upper Body", type:"Strength", difficulty:1 },
+    { name:"Half Jacks",    videoId:"F16nHvGbsiw", block:"warmup",   focus:"Lower Body", type:"Cardio",   difficulty:3 },
+    { name:"High Knees",    videoId:"mF_JmxPWIB0", block:"warmup",   focus:"Lower Body", type:"Cardio",   difficulty:3 },
+    { name:"Jumping Jacks", videoId:"jmbNjqtdo1Y", block:"warmup",   focus:"Full Body",  type:"Cardio",   difficulty:3 },
+    { name:"Squats",        videoId:"Zqc_lc93hak", block:"main",     focus:"Lower Body", type:"Strength", difficulty:2 },
+    { name:"Lunges",        videoId:"Q5MKMElLb4s", block:"main",     focus:"Lower Body", type:"Strength", difficulty:3 },
+    { name:"Push-Ups",      videoId:"n6NbTwfitRA", block:"main",     focus:"Upper Body", type:"Strength", difficulty:4 },
+    { name:"Climbers",      videoId:"TXVKbYk9xRo", block:"main",     focus:"Abs",        type:"Metcon",   difficulty:3 },
+    { name:"Burpees",       videoId:"mG0iaoLM2vc", block:"main",     focus:"Full Body",  type:"Metcon",   difficulty:4 },
+    { name:"Glute Bridge",  videoId:"N48d7sm8dbU", block:"cooldown", focus:"Glutes",     type:"Strength", difficulty:2 },
+  ];
 
-const DAREBEE_FULL_PLAYLIST =
-    "PLQSMS0J6JbrK9fA74RqpVHkzH14qvaPYH";
+  const DEFAULT_SETTINGS = {
+    warmup:   { work:30, rest:15 },
+    main:     { work:40, rest:20 },
+    cooldown: { work:40, rest:10 },
+  };
 
-const DAREBEE_EXERCISE_LIBRARY =
-    "PLQSMS0J6JbrKdSOSbyJXaQ_zN_HSSp7zZ";
+  let blockSettings;
+  try{
+    const saved = JSON.parse(localStorage.getItem("dbTrainerSettings"));
+    blockSettings = saved && saved.warmup ? saved : JSON.parse(JSON.stringify(DEFAULT_SETTINGS));
+  }catch(e){
+    blockSettings = JSON.parse(JSON.stringify(DEFAULT_SETTINGS));
+  }
 
+  const state = {
+    index: 0,
+    phase: "work",      // 'work' | 'rest' | 'done'
+    timeLeft: blockSettings[MOVES[0].block].work,
+    playing: false,
+    voiceOn: true,
+    started: false,
+    timerId: null,
+  };
 
-/* =========================================================
-   WORKOUT DATABASE
-=========================================================
+  // ---- element refs ----
+  const el = {
+    blockPill: document.getElementById("blockPill"),
+    counter: document.getElementById("counter"),
+    videoWrap: document.getElementById("videoWrap"),
+    videoFrame: document.getElementById("videoFrame"),
+    moveName: document.getElementById("moveName"),
+    tagFocus: document.getElementById("tagFocus"),
+    tagType: document.getElementById("tagType"),
+    diffDots: document.getElementById("diffDots"),
+    timerCard: document.getElementById("timerCard"),
+    phaseLabel: document.getElementById("phaseLabel"),
+    clock: document.getElementById("clock"),
+    barFill: document.getElementById("barFill"),
+    playBtn: document.getElementById("playBtn"),
+    playIcon: document.getElementById("playIcon"),
+    prevBtn: document.getElementById("prevBtn"),
+    nextBtn: document.getElementById("nextBtn"),
+    resetBtn: document.getElementById("resetBtn"),
+    listContainer: document.getElementById("listContainer"),
+    voiceToggle: document.getElementById("voiceToggle"),
+    settingsBody: document.getElementById("settingsBody"),
+  };
 
-   IMPORTANT:
+  // ---- helpers ----
+  function currentMove(){ return MOVES[state.index]; }
+  function currentCfg(){ return blockSettings[currentMove().block]; }
+  function fmt(sec){
+    const m = Math.floor(sec/60).toString().padStart(2,"0");
+    const s = Math.max(0,sec % 60).toString().padStart(2,"0");
+    return `${m}:${s}`;
+  }
 
-   videoId is the ACTUAL YouTube video ID.
+  function speak(text){
+    if(!state.voiceOn) return;
+    if(!("speechSynthesis" in window)) return;
+    try{
+      const u = new SpeechSynthesisUtterance(text);
+      u.rate = 1.04;
+      u.pitch = 1;
+      window.speechSynthesis.speak(u);
+    }catch(e){ /* ignore */ }
+  }
 
-   NEVER use playlistIndex here.
+  function loadVideo(){
+    const id = currentMove().videoId;
+    el.videoFrame.src = `https://www.youtube.com/embed/${id}?controls=1&showinfo=0&rel=0&autoplay=1&loop=1&mute=1&playlist=${id}`;
+  }
 
-   When we verify another DAREBEE exercise, we add:
+  function announceStart(){
+    speak(`${currentMove().name}. Begin.`);
+  }
 
-       videoId: "xxxxxxxxxxx"
+  // ---- rendering ----
+  function render(){
+    const move = currentMove();
+    const cfg = currentCfg();
 
-   The player will then load exactly that video.
+    el.blockPill.textContent = BLOCK_LABEL[move.block];
+    el.blockPill.style.color = BLOCK_COLOR[move.block];
+    el.counter.textContent = `${state.index+1} / ${MOVES.length}`;
 
-========================================================= */
-
-
-/*
-   These are the three exact videos you supplied.
-
-   Their individual exercise names should only be assigned
-   after verifying the YouTube title.
-*/
-
-const routine = [
-
-    {
-        name: "DAREBEE Video 1",
-        block: "Warm-up",
-        work: 40,
-        rest: 15,
-        videoId: "Laz3U14KB2A"
-    },
-
-    {
-        name: "DAREBEE Video 2",
-        block: "Main",
-        work: 40,
-        rest: 15,
-        videoId: "XkG6WUtuKSA"
-    },
-
-    {
-        name: "DAREBEE Video 3",
-        block: "Main",
-        work: 40,
-        rest: 15,
-        videoId: "4XcGTvcSRxY"
+    el.moveName.textContent = state.phase === "done" ? "Workout complete" : move.name;
+    el.tagFocus.textContent = move.focus;
+    el.tagType.textContent = move.type;
+    el.diffDots.innerHTML = "";
+    for(let i=1;i<=5;i++){
+      const d = document.createElement("span");
+      if(i<=move.difficulty) d.classList.add("on");
+      el.diffDots.appendChild(d);
     }
 
-];
+    const phase = state.phase === "rest" ? "rest" : "work";
+    el.videoWrap.classList.toggle("phase-work", phase==="work");
+    el.videoWrap.classList.toggle("phase-rest", phase==="rest");
+    el.timerCard.classList.toggle("phase-work", phase==="work");
+    el.timerCard.classList.toggle("phase-rest", phase==="rest");
+    el.phaseLabel.textContent = state.phase === "done" ? "Done" : (phase === "work" ? "Work" : "Rest");
+    el.phaseLabel.className = "phase-label " + (state.phase === "done" ? "" : phase);
 
+    el.clock.textContent = state.phase === "done" ? "00:00" : fmt(state.timeLeft);
+    const total = state.phase === "rest" ? cfg.rest : cfg.work;
+    const pct = state.phase === "done" ? 0 : Math.max(0, Math.min(100, (state.timeLeft/Math.max(total,1))*100));
+    el.barFill.style.width = pct + "%";
+    el.barFill.classList.toggle("rest", phase==="rest");
 
-/* =========================================================
-   STATE
-========================================================= */
+    el.playIcon.innerHTML = state.playing
+      ? '<rect x="6" y="5" width="4" height="14" fill="currentColor"/><rect x="14" y="5" width="4" height="14" fill="currentColor"/>'
+      : '<path d="M8 5v14l12-7L8 5z" fill="currentColor"/>';
 
-let currentIndex = 0;
+    el.prevBtn.disabled = false;
+    el.nextBtn.disabled = false;
 
-let phase = "prepare";
+    renderList();
+  }
 
-let timeLeft = 0;
+  function renderList(){
+    el.listContainer.innerHTML = "";
+    let lastBlock = null;
+    MOVES.forEach((m, i) => {
+      if(m.block !== lastBlock){
+        lastBlock = m.block;
+        const groupHeading = document.createElement("div");
+        groupHeading.className = "block-title";
+        const cfg = blockSettings[m.block];
+        groupHeading.innerHTML = `<span class="block-dot" style="background:${BLOCK_COLOR[m.block]}"></span>${BLOCK_LABEL[m.block]} · ${cfg.work}s work / ${cfg.rest}s rest`;
+        el.listContainer.appendChild(groupHeading);
+      }
 
-let elapsedSeconds = 0;
+      const row = document.createElement("div");
+      const isDone = i < state.index;
+      const isCurrent = i === state.index;
+      row.className = "move-row" + (isCurrent ? " current" : "") + (isDone ? " done" : "");
+      row.addEventListener("click", () => goToIndex(i));
 
-let timer = null;
+      const status = document.createElement("div");
+      status.className = "row-status" + (isDone ? " done" : "") + (isCurrent ? " current" : "");
+      status.textContent = isDone ? "✓" : (i+1);
 
-let paused = false;
+      const main = document.createElement("div");
+      main.className = "row-main";
+      main.innerHTML = `<div class="row-name">${m.name}</div><div class="row-sub">${m.focus} · ${m.type}</div>`;
 
-let workoutStarted = false;
+      const time = document.createElement("div");
+      time.className = "row-time";
+      time.textContent = `${blockSettings[m.block].work}s`;
 
-let youtubeReady = false;
+      row.appendChild(status);
+      row.appendChild(main);
+      row.appendChild(time);
+      el.listContainer.appendChild(row);
+    });
+  }
 
-let player = null;
+  function renderSettings(){
+    el.settingsBody.innerHTML = "";
+    Object.keys(BLOCK_LABEL).forEach(block => {
+      const wrap = document.createElement("div");
+      wrap.className = "block-setting";
+      wrap.innerHTML = `
+        <div class="block-setting-title">
+          <span class="block-dot" style="background:${BLOCK_COLOR[block]}"></span>${BLOCK_LABEL[block]}
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Work (sec)</label>
+            <input type="number" min="5" max="180" step="5" value="${blockSettings[block].work}" data-block="${block}" data-kind="work">
+          </div>
+          <div class="field">
+            <label>Rest (sec)</label>
+            <input type="number" min="0" max="120" step="5" value="${blockSettings[block].rest}" data-block="${block}" data-kind="rest">
+          </div>
+        </div>
+      `;
+      el.settingsBody.appendChild(wrap);
+    });
 
+    el.settingsBody.querySelectorAll("input").forEach(input => {
+      input.addEventListener("change", () => {
+        const block = input.dataset.block;
+        const kind = input.dataset.kind;
+        let val = parseInt(input.value, 10);
+        if(isNaN(val) || val < 0) val = 0;
+        blockSettings[block][kind] = val;
+        localStorage.setItem("dbTrainerSettings", JSON.stringify(blockSettings));
+        render();
+      });
+    });
+  }
 
-/* =========================================================
-   DOM
-========================================================= */
+  // ---- timer engine ----
+  function tick(){
+    state.timeLeft -= 1;
+    const cfg = currentCfg();
 
-const exerciseElement =
-    document.getElementById("exercise");
-
-const sourceElement =
-    document.getElementById("source");
-
-const timeElement =
-    document.getElementById("time");
-
-const totalTimeElement =
-    document.getElementById("totalTime");
-
-const routineList =
-    document.getElementById("routineList");
-
-const playPauseButton =
-    document.getElementById("playPauseButton");
-
-const videoPlaceholder =
-    document.getElementById("videoPlaceholder");
-
-const playerStatus =
-    document.getElementById("playerStatus");
-
-
-/* =========================================================
-   YOUTUBE API
-========================================================= */
-
-function onYouTubeIframeAPIReady() {
-
-    player = new YT.Player(
-        "youtubePlayer",
-        {
-
-            /*
-               No playlist is loaded here.
-
-               This is intentional.
-
-               We load individual videos by exact ID.
-            */
-
-            playerVars: {
-
-                playsinline: 1,
-
-                rel: 0,
-
-                modestbranding: 1,
-
-                iv_load_policy: 3
-
-            },
-
-            events: {
-
-                onReady:
-                    onPlayerReady,
-
-                onStateChange:
-                    onPlayerStateChange,
-
-                onError:
-                    onPlayerError
-
-            }
-
+    if(state.phase === "work"){
+      if(state.timeLeft === 15){
+        speak("15 seconds left.");
+      }
+      if(cfg.rest === 0 && state.timeLeft === 5 && state.index < MOVES.length - 1){
+        speak(`Next up: ${MOVES[state.index+1].name}.`);
+      }
+      if(state.timeLeft === 3 || state.timeLeft === 2 || state.timeLeft === 1){
+        speak(String(state.timeLeft));
+      }
+      if(state.timeLeft <= 0){
+        if(cfg.rest > 0){
+          state.phase = "rest";
+          state.timeLeft = cfg.rest;
+          if(state.index < MOVES.length - 1){
+            speak(`Rest. Next up: ${MOVES[state.index+1].name}.`);
+          }else{
+            speak("Rest.");
+          }
+        }else{
+          advanceMove();
         }
-    );
-}
-
-
-/* =========================================================
-   PLAYER READY
-========================================================= */
-
-function onPlayerReady() {
-
-    youtubeReady = true;
-
-    videoPlaceholder.classList.add(
-        "hidden"
-    );
-
-    playerStatus.textContent =
-        "DAREBEE • ready";
-
-    loadExerciseVideo(
-        currentIndex,
-        false
-    );
-}
-
-
-/* =========================================================
-   PLAYER STATE
-========================================================= */
-
-function onPlayerStateChange(event) {
-
-    if (
-        event.data ===
-        YT.PlayerState.PLAYING
-    ) {
-
-        playerStatus.textContent =
-            "DAREBEE • playing";
-
+      }
+    }else if(state.phase === "rest"){
+      if(state.timeLeft === 3 || state.timeLeft === 2 || state.timeLeft === 1){
+        speak(String(state.timeLeft));
+      }
+      if(state.timeLeft <= 0){
+        advanceMove();
+      }
     }
+    render();
+  }
 
-    else if (
-        event.data ===
-        YT.PlayerState.PAUSED
-    ) {
-
-        playerStatus.textContent =
-            "DAREBEE • paused";
-
+  function advanceMove(){
+    if(state.index >= MOVES.length - 1){
+      finishWorkout();
+      return;
     }
+    state.index += 1;
+    state.phase = "work";
+    state.timeLeft = currentCfg().work;
+    loadVideo();
+    announceStart();
+  }
 
-    else if (
-        event.data ===
-        YT.PlayerState.ENDED
-    ) {
+  function finishWorkout(){
+    state.phase = "done";
+    state.playing = false;
+    clearInterval(state.timerId);
+    speak("Workout complete. Great work.");
+    render();
+  }
 
-        playerStatus.textContent =
-            "DAREBEE • video ended";
-
+  function play(){
+    if(state.phase === "done") return;
+    if(state.playing) return;
+    state.playing = true;
+    if(!state.started){
+      state.started = true;
+      loadVideo();
+      announceStart();
     }
-}
-
-
-/* =========================================================
-   PLAYER ERROR
-========================================================= */
-
-function onPlayerError(event) {
-
-    console.error(
-        "YouTube error:",
-        event.data
-    );
-
-    playerStatus.textContent =
-        "YouTube video unavailable";
-}
-
-
-/* =========================================================
-   LOAD EXACT VIDEO
-=========================================================
-
-   THIS IS THE KEY FIX.
-
-   We do NOT use:
-
-       playlistIndex
-
-   We do NOT use:
-
-       cuePlaylist()
-
-   We do NOT use:
-
-       loadPlaylist()
-
-   We use the exact video ID.
-
-========================================================= */
-
-function loadExerciseVideo(
-    index,
-    autoplay = false
-) {
-
-    if (
-        !youtubeReady ||
-        !player
-    ) {
-        return;
-    }
-
-    const exercise =
-        routine[index];
-
-    if (
-        !exercise ||
-        !exercise.videoId
-    ) {
-        return;
-    }
-
-
-    playerStatus.textContent =
-        "DAREBEE • loading";
-
-
-    /*
-       Exact YouTube video.
-    */
-
-    if (autoplay) {
-
-        player.loadVideoById({
-            videoId:
-                exercise.videoId,
-
-            startSeconds: 0
-        });
-
-    }
-
-    else {
-
-        player.cueVideoById({
-            videoId:
-                exercise.videoId,
-
-            startSeconds: 0
-        });
-
-    }
-
-}
-
-
-/* =========================================================
-   SPEECH
-========================================================= */
-
-function speak(text) {
-
-    if (
-        !("speechSynthesis" in window)
-    ) {
-        return;
-    }
-
-    window.speechSynthesis.cancel();
-
-    const message =
-        new SpeechSynthesisUtterance(
-            text
-        );
-
-    message.rate = 0.9;
-
-    window.speechSynthesis.speak(
-        message
-    );
-}
-
-
-/* =========================================================
-   FORMAT TIME
-========================================================= */
-
-function formatTime(seconds) {
-
-    const minutes =
-        Math.floor(seconds / 60);
-
-    const secs =
-        seconds % 60;
-
-    return (
-
-        String(minutes)
-            .padStart(2, "0")
-
-        +
-
-        ":"
-
-        +
-
-        String(secs)
-            .padStart(2, "0")
-    );
-}
-
-
-/* =========================================================
-   BUILD ROADMAP
-========================================================= */
-
-function buildRoutineList() {
-
-    routineList.innerHTML = "";
-
-    routine.forEach(
-        (exercise, index) => {
-
-            const item =
-                document.createElement(
-                    "div"
-                );
-
-            item.className =
-                "exercise-item pending";
-
-            item.id =
-                "exercise-" + index;
-
-
-            item.innerHTML = `
-
-                <div class="exercise-top">
-
-                    <span class="status">
-                        ○
-                    </span>
-
-                    <span class="exercise-name">
-                        ${exercise.name}
-                    </span>
-
-                </div>
-
-                <div class="progress-container">
-
-                    <div
-                        class="progress-bar"
-                        id="progress-${index}">
-                    </div>
-
-                </div>
-            `;
-
-
-            item.addEventListener(
-                "click",
-                () => {
-
-                    selectExercise(
-                        index
-                    );
-
-                }
-            );
-
-
-            routineList.appendChild(
-                item
-            );
-
-        }
-    );
-
-
-    updateRoutineList();
-}
-
-
-/* =========================================================
-   SELECT EXERCISE
-========================================================= */
-
-function selectExercise(index) {
-
-    clearInterval(timer);
-
-    window.speechSynthesis.cancel();
-
-    currentIndex =
-        index;
-
-    phase =
-        "work";
-
-    timeLeft =
-        routine[
-            currentIndex
-        ].work;
-
-    workoutStarted =
-        true;
-
-    paused =
-        true;
-
-    playPauseButton.textContent =
-        "▶";
-
-
-    /*
-       EXACT VIDEO CHANGES HERE.
-    */
-
-    loadExerciseVideo(
-        currentIndex,
-        false
-    );
-
-
-    updateDisplay();
-}
-
-
-/* =========================================================
-   UPDATE ROADMAP
-========================================================= */
-
-function updateRoutineList() {
-
-    routine.forEach(
-        (exercise, index) => {
-
-            const item =
-                document.getElementById(
-                    "exercise-" + index
-                );
-
-            if (!item) {
-                return;
-            }
-
-            const status =
-                item.querySelector(
-                    ".status"
-                );
-
-            const progress =
-                document.getElementById(
-                    "progress-" + index
-                );
-
-
-            item.classList.remove(
-                "active",
-                "completed",
-                "pending"
-            );
-
-
-            if (
-                index < currentIndex
-            ) {
-
-                item.classList.add(
-                    "completed"
-                );
-
-                status.textContent =
-                    "✓";
-
-                progress.style.width =
-                    "100%";
-
-            }
-
-
-            else if (
-                index === currentIndex
-            ) {
-
-                item.classList.add(
-                    "active"
-                );
-
-                status.textContent =
-                    "●";
-
-
-                if (
-                    phase === "work"
-                ) {
-
-                    const completed =
-                        exercise.work -
-                        timeLeft;
-
-                    const percentage =
-                        Math.min(
-                            100,
-                            Math.max(
-                                0,
-                                (
-                                    completed /
-                                    exercise.work
-                                ) * 100
-                            )
-                        );
-
-                    progress.style.width =
-                        percentage + "%";
-
-                }
-
-                else {
-
-                    progress.style.width =
-                        "0%";
-
-                }
-
-
-                item.scrollIntoView({
-
-                    behavior: "smooth",
-
-                    block: "center"
-
-                });
-
-            }
-
-
-            else {
-
-                item.classList.add(
-                    "pending"
-                );
-
-                status.textContent =
-                    "○";
-
-                progress.style.width =
-                    "0%";
-
-            }
-
-        }
-    );
-}
-
-
-/* =========================================================
-   DISPLAY
-========================================================= */
-
-function updateDisplay() {
-
-    const exercise =
-        routine[currentIndex];
-
-    if (!exercise) {
-        return;
-    }
-
-
-    if (
-        phase === "prepare"
-    ) {
-
-        exerciseElement.textContent =
-            "Prepare for " +
-            exercise.name +
-            " (" +
-            (currentIndex + 1) +
-            "/" +
-            routine.length +
-            ")";
-
-    }
-
-    else if (
-        phase === "work"
-    ) {
-
-        exerciseElement.textContent =
-            exercise.name +
-            " (" +
-            (currentIndex + 1) +
-            "/" +
-            routine.length +
-            ")";
-
-    }
-
-    else if (
-        phase === "rest"
-    ) {
-
-        const next =
-            routine[
-                currentIndex + 1
-            ];
-
-        exerciseElement.textContent =
-            "Rest — Next: " +
-            (
-                next
-                    ? next.name
-                    : "Workout Complete"
-            );
-    }
-
-
-    sourceElement.textContent =
-        "How to: DAREBEE";
-
-
-    timeElement.textContent =
-        formatTime(timeLeft);
-
-
-    totalTimeElement.textContent =
-        formatTime(
-            elapsedSeconds
-        );
-
-
-    updateRoutineList();
-}
-
-
-/* =========================================================
-   START
-========================================================= */
-
-function startTimer() {
-
-    clearInterval(timer);
-
-    currentIndex = 0;
-
-    phase =
-        "prepare";
-
-    paused =
-        false;
-
-    workoutStarted =
-        true;
-
-    elapsedSeconds =
-        0;
-
-    timeLeft =
-        5;
-
-
-    playPauseButton.textContent =
-        "❚❚";
-
-
-    loadExerciseVideo(
-        0,
-        true
-    );
-
-
-    updateDisplay();
-
-
-    speak(
-        "Prepare for " +
-        routine[0].name
-    );
-
-
-    timer =
-        setInterval(
-            tick,
-            1000
-        );
-}
-
-
-/* =========================================================
-   PLAY / PAUSE
-========================================================= */
-
-function togglePause() {
-
-    if (
-        !workoutStarted
-    ) {
-
-        startTimer();
-
-        return;
-    }
-
-
-    paused =
-        !paused;
-
-
-    if (paused) {
-
-        playPauseButton.textContent =
-            "▶";
-
-        window.speechSynthesis.cancel();
-
-
-        if (
-            youtubeReady &&
-            player
-        ) {
-
-            player.pauseVideo();
-
-        }
-
-    }
-
-    else {
-
-        playPauseButton.textContent =
-            "❚❚";
-
-
-        if (
-            youtubeReady &&
-            player
-        ) {
-
-            player.playVideo();
-
-        }
-
-    }
-}
-
-
-/* =========================================================
-   NEXT
-========================================================= */
-
-function skipMove() {
-
-    if (
-        !workoutStarted
-    ) {
-        return;
-    }
-
-    clearInterval(timer);
-
-    window.speechSynthesis.cancel();
-
-
-    currentIndex++;
-
-
-    if (
-        currentIndex >=
-        routine.length
-    ) {
-
-        finishWorkout();
-
-        return;
-    }
-
-
-    phase =
-        "work";
-
-    timeLeft =
-        routine[
-            currentIndex
-        ].work;
-
-    paused =
-        false;
-
-
-    playPauseButton.textContent =
-        "❚❚";
-
-
-    /*
-       EXACT NEW VIDEO.
-    */
-
-    loadExerciseVideo(
-        currentIndex,
-        true
-    );
-
-
-    updateDisplay();
-
-
-    speak(
-        "Start " +
-        routine[
-            currentIndex
-        ].name
-    );
-
-
-    timer =
-        setInterval(
-            tick,
-            1000
-        );
-}
-
-
-/* =========================================================
-   PREVIOUS
-========================================================= */
-
-function previousMove() {
-
-    if (
-        !workoutStarted
-    ) {
-        return;
-    }
-
-    clearInterval(timer);
-
-    window.speechSynthesis.cancel();
-
-
-    if (
-        currentIndex <= 0
-    ) {
-
-        currentIndex = 0;
-
-        phase =
-            "prepare";
-
-        timeLeft =
-            5;
-
-
-        loadExerciseVideo(
-            0,
-            false
-        );
-
-
-        updateDisplay();
-
-        return;
-    }
-
-
-    currentIndex--;
-
-
-    phase =
-        "work";
-
-    timeLeft =
-        routine[
-            currentIndex
-        ].work;
-
-    paused =
-        false;
-
-
-    playPauseButton.textContent =
-        "❚❚";
-
-
-    loadExerciseVideo(
-        currentIndex,
-        true
-    );
-
-
-    updateDisplay();
-
-
-    speak(
-        "Start " +
-        routine[
-            currentIndex
-        ].name
-    );
-
-
-    timer =
-        setInterval(
-            tick,
-            1000
-        );
-}
-
-
-/* =========================================================
-   RESET
-========================================================= */
-
-function resetTimer() {
-
-    clearInterval(timer);
-
-    window.speechSynthesis.cancel();
-
-
-    currentIndex =
-        0;
-
-    phase =
-        "prepare";
-
-    timeLeft =
-        0;
-
-    elapsedSeconds =
-        0;
-
-    paused =
-        false;
-
-    workoutStarted =
-        false;
-
-
-    playPauseButton.textContent =
-        "▶";
-
-
-    exerciseElement.textContent =
-        "Press Play";
-
-
-    sourceElement.textContent =
-        "DAREBEE";
-
-
-    timeElement.textContent =
-        "00:00";
-
-
-    totalTimeElement.textContent =
-        "00:00";
-
-
-    loadExerciseVideo(
-        0,
-        false
-    );
-
-
-    updateRoutineList();
-}
-
-
-/* =========================================================
-   TIMER
-========================================================= */
-
-function tick() {
-
-    if (paused) {
-        return;
-    }
-
-
-    elapsedSeconds++;
-
-
-    if (
-        timeLeft > 0
-    ) {
-
-        timeLeft--;
-
-    }
-
-
-    if (
-
-        phase === "prepare" &&
-
-        timeLeft <= 3 &&
-
-        timeLeft > 0
-
-    ) {
-
-        speak(
-            String(timeLeft)
-        );
-
-    }
-
-
-    if (
-
-        phase === "prepare" &&
-
-        timeLeft === 0
-
-    ) {
-
-        nextPhase();
-
-        return;
-    }
-
-
-    if (
-
-        phase === "work" &&
-
-        timeLeft === 10
-
-    ) {
-
-        speak(
-            "10 seconds left"
-        );
-
-    }
-
-
-    if (
-
-        phase === "work" &&
-
-        timeLeft <= 3 &&
-
-        timeLeft > 0
-
-    ) {
-
-        speak(
-            String(timeLeft)
-        );
-
-    }
-
-
-    if (
-
-        phase === "work" &&
-
-        timeLeft === 0
-
-    ) {
-
-        nextPhase();
-
-        return;
-    }
-
-
-    if (
-
-        phase === "rest" &&
-
-        timeLeft <= 3 &&
-
-        timeLeft > 0
-
-    ) {
-
-        speak(
-            String(timeLeft)
-        );
-
-    }
-
-
-    if (
-
-        phase === "rest" &&
-
-        timeLeft === 0
-
-    ) {
-
-        nextPhase();
-
-        return;
-    }
-
-
-    updateDisplay();
-}
-
-
-/* =========================================================
-   NEXT PHASE
-========================================================= */
-
-function nextPhase() {
-
-    if (
-        phase === "prepare"
-    ) {
-
-        phase =
-            "work";
-
-        timeLeft =
-            routine[
-                currentIndex
-            ].work;
-
-
-        updateDisplay();
-
-
-        speak(
-            "Start " +
-            routine[
-                currentIndex
-            ].name
-        );
-
-
-        return;
-    }
-
-
-    if (
-        phase === "work"
-    ) {
-
-        const exercise =
-            routine[
-                currentIndex
-            ];
-
-
-        if (
-            exercise.rest === 0
-        ) {
-
-            goToNextExercise();
-
-            return;
-        }
-
-
-        phase =
-            "rest";
-
-        timeLeft =
-            exercise.rest;
-
-
-        /*
-           Pause video during rest.
-        */
-
-        if (
-            youtubeReady &&
-            player
-        ) {
-
-            player.pauseVideo();
-
-        }
-
-
-        updateDisplay();
-
-
-        speak("Rest");
-
-        return;
-    }
-
-
-    if (
-        phase === "rest"
-    ) {
-
-        goToNextExercise();
-
-    }
-}
-
-
-/* =========================================================
-   NEXT EXERCISE
-========================================================= */
-
-function goToNextExercise() {
-
-    currentIndex++;
-
-
-    if (
-        currentIndex >=
-        routine.length
-    ) {
-
-        finishWorkout();
-
-        return;
-    }
-
-
-    phase =
-        "work";
-
-    timeLeft =
-        routine[
-            currentIndex
-        ].work;
-
-
-    /*
-       EXACT NEXT DAREBEE VIDEO.
-    */
-
-    loadExerciseVideo(
-        currentIndex,
-        true
-    );
-
-
-    updateDisplay();
-
-
-    speak(
-        "Start " +
-        routine[
-            currentIndex
-        ].name
-    );
-}
-
-
-/* =========================================================
-   FINISH
-========================================================= */
-
-function finishWorkout() {
-
-    clearInterval(timer);
-
-    window.speechSynthesis.cancel();
-
-
-    workoutStarted =
-        false;
-
-    paused =
-        false;
-
-
-    playPauseButton.textContent =
-        "▶";
-
-
-    exerciseElement.textContent =
-        "Workout Complete!";
-
-
-    sourceElement.textContent =
-        "";
-
-
-    timeElement.textContent =
-        "00:00";
-
-
-    totalTimeElement.textContent =
-        formatTime(
-            elapsedSeconds
-        );
-
-
-    routine.forEach(
-        (exercise, index) => {
-
-            const item =
-                document.getElementById(
-                    "exercise-" + index
-                );
-
-            if (!item) {
-                return;
-            }
-
-
-            const status =
-                item.querySelector(
-                    ".status"
-                );
-
-
-            const progress =
-                document.getElementById(
-                    "progress-" + index
-                );
-
-
-            item.classList.remove(
-                "active",
-                "pending"
-            );
-
-
-            item.classList.add(
-                "completed"
-            );
-
-
-            status.textContent =
-                "✓";
-
-
-            progress.style.width =
-                "100%";
-
-        }
-    );
-
-
-    speak(
-        "Workout complete"
-    );
-}
-
-
-/* =========================================================
-   INITIALIZE
-========================================================= */
-
-buildRoutineList();
-
+    state.timerId = setInterval(tick, 1000);
+    render();
+  }
+
+  function pause(){
+    state.playing = false;
+    clearInterval(state.timerId);
+    if("speechSynthesis" in window) window.speechSynthesis.cancel();
+    render();
+  }
+
+  function togglePlay(){
+    state.playing ? pause() : play();
+  }
+
+  function goToIndex(i){
+    pause();
+    state.index = i;
+    state.phase = "work";
+    state.timeLeft = currentCfg().work;
+    state.started = true;
+    loadVideo();
+    announceStart();
+    render();
+  }
+
+  function nextMove(){
+    if(state.index < MOVES.length - 1) goToIndex(state.index + 1);
+  }
+  function prevMove(){
+    if(state.index > 0) goToIndex(state.index - 1);
+  }
+
+  function reset(){
+    pause();
+    state.index = 0;
+    state.phase = "work";
+    state.timeLeft = currentCfg().work;
+    state.started = false;
+    loadVideo();
+    render();
+  }
+
+  // ---- wire up ----
+  el.playBtn.addEventListener("click", togglePlay);
+  el.nextBtn.addEventListener("click", nextMove);
+  el.prevBtn.addEventListener("click", prevMove);
+  el.resetBtn.addEventListener("click", reset);
+  el.voiceToggle.addEventListener("change", (e) => {
+    state.voiceOn = e.target.checked;
+    if(!state.voiceOn && "speechSynthesis" in window) window.speechSynthesis.cancel();
+  });
+
+  // ---- init ----
+  loadVideo();
+  renderSettings();
+  render();
+
+})();
 </script>
-
 </body>
-
 </html>
