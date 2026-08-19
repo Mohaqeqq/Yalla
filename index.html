@@ -1,2235 +1,583 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0"
->
-
-<meta
-  name="referrer"
-  content="strict-origin-when-cross-origin"
->
-
-<title>Yalla Workout</title>
-
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Interval Trainer — DAREBEE Circuit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-
-/* =========================================================
-   GLOBAL
-========================================================= */
-
-* {
-  box-sizing: border-box;
-}
-
-html,
-body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  min-height: 100%;
-}
-
-body {
-
-  font-family:
-    Arial,
-    Helvetica,
-    sans-serif;
-
-  background: #111;
-
-  color: #eee;
-
-}
-
-
-/* =========================================================
-   LAYOUT
-========================================================= */
-
-.container {
-
-  display: flex;
-
-  min-height: 100vh;
-
-}
-
-
-/* =========================================================
-   EXERCISE ROADMAP
-========================================================= */
-
-.exercise-list {
-
-  width: 340px;
-
-  background: #181818;
-
-  border-right:
-    1px solid #2b2b2b;
-
-  padding: 20px;
-
-  overflow-y: auto;
-
-  height: 100vh;
-
-}
-
-
-/* =========================================================
-   EXERCISE ITEM
-========================================================= */
-
-.exercise-item {
-
-  position: relative;
-
-  padding: 8px 8px;
-
-  margin-bottom: 2px;
-
-  border-radius: 5px;
-
-  color: #555;
-
-  font-size: 0.9em;
-
-  transition:
-    background 0.2s,
-    color 0.2s;
-
-}
-
-
-.exercise-item.completed {
-
-  color: #777;
-
-}
-
-
-.exercise-item.active {
-
-  color: #eee;
-
-  background: #222;
-
-}
-
-
-.exercise-item.pending {
-
-  color: #555;
-
-}
-
-
-/* =========================================================
-   STATUS
-========================================================= */
-
-.status {
-
-  display: inline-block;
-
-  width: 24px;
-
-  margin-right: 5px;
-
-  text-align: center;
-
-}
-
-
-/* =========================================================
-   PROGRESS
-========================================================= */
-
-.progress-container {
-
-  height: 3px;
-
-  background: #333;
-
-  margin:
-    7px
-    0
-    2px
-    29px;
-
-  border-radius: 2px;
-
-  overflow: hidden;
-
-}
-
-
-.progress-bar {
-
-  height: 100%;
-
-  width: 0%;
-
-  background: #eee;
-
-  transition:
-    width 0.3s linear;
-
-}
-
-
-/* =========================================================
-   MAIN
-========================================================= */
-
-.main {
-
-  flex: 1;
-
-  display: flex;
-
-  flex-direction: column;
-
-  justify-content: center;
-
-  align-items: center;
-
-  padding: 30px;
-
-  min-width: 0;
-
-}
-
-
-/* =========================================================
-   CURRENT EXERCISE
-========================================================= */
-
-#exercise {
-
-  font-size: 2em;
-
-  margin:
-    10px
-    20px
-    8px;
-
-  text-align: center;
-
-  max-width: 800px;
-
-}
-
-
-/* =========================================================
-   SOURCE
-========================================================= */
-
-#source {
-
-  font-size: 0.8em;
-
-  color: #666;
-
-  margin-bottom: 20px;
-
-}
-
-
-/* =========================================================
-   YOUTUBE PLAYER
-
-   ALWAYS VISIBLE
-
-   NO POPUP
-
-   NO NEW PAGE
-
-========================================================= */
-
-.video-wrapper {
-
-  width:
-    min(760px, 100%);
-
-  margin-bottom: 25px;
-
-}
-
-
-.video-frame {
-
-  position: relative;
-
-  width: 100%;
-
-  aspect-ratio: 16 / 9;
-
-  background: #000;
-
-  border-radius: 10px;
-
-  overflow: hidden;
-
-}
-
-
-/*
-   YouTube iframe created by the API
-*/
-
-#youtubePlayer {
-
-  position: absolute;
-
-  inset: 0;
-
-  width: 100%;
-
-  height: 100%;
-
-}
-
-
-/* =========================================================
-   TIMER
-========================================================= */
-
-#time {
-
-  font-size: 5em;
-
-  font-weight: bold;
-
-  margin: 10px;
-
-}
-
-
-/* =========================================================
-   TOTAL
-========================================================= */
-
-#totalLabel {
-
-  margin-top: 20px;
-
-  color: #666;
-
-  font-size: 0.8em;
-
-  letter-spacing: 1px;
-
-}
-
-
-#totalTime {
-
-  font-size: 2em;
-
-  margin-bottom: 25px;
-
-}
-
-
-/* =========================================================
-   CONTROLS
-========================================================= */
-
-.controls {
-
-  display: flex;
-
-  justify-content: center;
-
-  align-items: center;
-
-  gap: 10px;
-
-}
-
-
-.controls button {
-
-  width: 65px;
-
-  height: 55px;
-
-  border: 0;
-
-  border-radius: 8px;
-
-  background: #eee;
-
-  color: #111;
-
-  font-size: 1.5em;
-
-  cursor: pointer;
-
-}
-
-
-.controls button:hover {
-
-  background: #ccc;
-
-}
-
-
-.controls button:active {
-
-  transform: scale(0.95);
-
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media (max-width: 700px) {
-
-  .container {
-
-    flex-direction: column;
-
+  :root{
+    --bg:#121212;
+    --panel:#1a1a1a;
+    --line:#333330;
+    --text:#f2ede1;
+    --text-dim:#9a988e;
+    --text-faint:#68665e;
+    --work:#e2a33d;
+    --rest:#57b8b0;
   }
-
-
-  .exercise-list {
-
-    width: 100%;
-
-    height: 220px;
-
-    border-right: 0;
-
-    border-bottom:
-      1px solid #2b2b2b;
-
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'JetBrains Mono', monospace;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
   }
+  .app{max-width:460px;margin:0 auto;padding:0 14px 26px;}
 
-
-  .main {
-
-    padding: 20px;
-
+  /* ---- header : small total elapsed time ---- */
+  header{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:10px 0 8px;font-size:10.5px;color:var(--text-faint);
   }
+  header .counter{color:var(--text-faint);}
+  header .elapsed{color:var(--text-faint);}
+  header .elapsed b{color:var(--text-dim);font-weight:500;}
 
+  /* ---- top: name + description (priority #1) ---- */
+  .top{text-align:center;padding:6px 0 4px;}
+  .move-name{font-size:30px;font-weight:700;line-height:1.15;}
+  .move-desc{font-size:12px;color:var(--text-dim);margin-top:6px;line-height:1.5;padding:0 6px;min-height:36px;}
 
-  #exercise {
-
-    font-size: 1.5em;
-
+  /* ---- sticky: phase timer + controls ---- */
+  .sticky-controls{
+    position:sticky;top:0;z-index:5;background:var(--bg);
+    padding:8px 0 10px;border-bottom:1px solid var(--line);
   }
-
-
-  #time {
-
-    font-size: 4em;
-
+  .phase-label{
+    text-align:center;font-size:11px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--text-dim);
   }
+  .phase-label.work{color:var(--work);}
+  .phase-label.rest{color:var(--rest);}
+  .clock{
+    text-align:center;font-weight:700;font-size:27px;line-height:1;letter-spacing:.02em;
+    margin-top:4px;font-variant-numeric:tabular-nums;
+  }
+  .line-track{height:2px;background:var(--line);margin-top:8px;}
+  .line-fill{height:100%;background:var(--work);width:100%;transition:width 1s linear, background .3s ease;}
+  .line-fill.rest{background:var(--rest);}
 
-}
+  .controls{display:flex;align-items:center;justify-content:center;gap:22px;margin-top:12px;}
+  .txt-btn{
+    background:none;border:none;color:var(--text-dim);font-family:'JetBrains Mono',monospace;
+    font-size:12px;letter-spacing:.04em;cursor:pointer;padding:6px 2px;
+  }
+  .txt-btn:hover{color:var(--text);}
+  .txt-btn:active{opacity:.7;}
+  .play-btn{
+    background:none;border:none;color:var(--text);cursor:pointer;
+    display:flex;align-items:center;justify-content:center;padding:2px;
+  }
+  .play-btn.work{color:var(--work);}
+  .play-btn.rest{color:var(--rest);}
+  .play-btn svg{width:46px;height:46px;}
+  .play-btn:active{opacity:.75;}
+  .reset-row{text-align:center;margin-top:6px;}
 
+  /* ---- player + toggles ---- */
+  .video-wrap{
+    position:relative;border-radius:6px;overflow:hidden;margin-top:14px;
+    background:#000;border:1px solid var(--line);
+    aspect-ratio:20/9;max-height:200px;transition:border-color .3s ease;
+  }
+  .video-wrap iframe{width:100%;height:100%;border:0;display:block;}
+  .video-wrap.phase-work{border-color:var(--work);}
+  .video-wrap.phase-rest{border-color:var(--rest);}
+
+  .toggles-row{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:8px;font-size:11px;color:var(--text-dim);}
+  .simple-toggle{display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none;}
+  .simple-toggle input{accent-color:var(--text-dim);width:13px;height:13px;}
+
+  /* ---- roadmap list ---- */
+  .list-heading{margin:18px 0 4px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-faint);}
+  .block-title{
+    font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--text-faint);margin:8px 0 2px;padding-top:6px;border-top:1px solid var(--line);
+  }
+  .block-title:first-child{border-top:none;padding-top:0;}
+  .move-row{
+    display:flex;align-items:center;gap:10px;
+    padding:4px 2px;border-bottom:1px solid var(--line);cursor:pointer;
+  }
+  .move-row:last-child{border-bottom:none;}
+  .row-mark{width:16px;flex-shrink:0;text-align:center;font-size:11px;color:var(--text-faint);}
+  .move-row.current .row-mark{color:var(--work);}
+  .row-name{flex:1;font-size:12.5px;color:var(--text-dim);}
+  .move-row.current .row-name{color:var(--text);font-weight:700;}
+  .move-row.done .row-name{color:var(--text-faint);text-decoration:line-through;text-decoration-color:var(--line);}
+
+  /* ---- settings ---- */
+  details.settings{margin-top:14px;border-top:1px solid var(--line);padding-top:2px;}
+  details.settings summary{
+    cursor:pointer;padding:8px 0;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    list-style:none;display:flex;align-items:center;justify-content:space-between;color:var(--text-dim);
+  }
+  details.settings summary::-webkit-details-marker{display:none;}
+  .settings-body{padding:2px 0 10px;}
+  .block-setting{margin-bottom:10px;}
+  .block-setting-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px;color:var(--text-dim);}
+  .field-row{display:flex;gap:8px;}
+  .field{flex:1;}
+  .field label{font-size:10px;color:var(--text-faint);display:block;margin-bottom:3px;}
+  .field input{
+    width:100%;background:var(--panel);border:1px solid var(--line);color:var(--text);
+    border-radius:4px;padding:6px 8px;font-family:'JetBrains Mono',monospace;font-size:12px;
+  }
+  .hint{font-size:10.5px;color:var(--text-faint);margin-top:8px;line-height:1.5;}
+
+  footer{margin-top:16px;text-align:center;font-size:10px;color:var(--text-faint);line-height:1.5;border-top:1px solid var(--line);padding-top:10px;}
+  footer a{color:var(--text-dim);}
+
+  @media (max-width:380px){
+    .clock{font-size:23px;}
+    .move-name{font-size:25px;}
+  }
 </style>
-
 </head>
-
-
 <body>
+<div class="app">
 
+  <header>
+    <div class="counter" id="counter">Move 1 / 10</div>
+    <div class="elapsed">Total <b id="elapsed">00:00</b></div>
+  </header>
 
-<div class="container">
-
-
-<!-- =======================================================
-     LEFT ROADMAP
-======================================================== -->
-
-<aside class="exercise-list">
-
-  <div id="routineList"></div>
-
-</aside>
-
-
-
-<!-- =======================================================
-     MAIN WORKOUT
-======================================================== -->
-
-<main class="main">
-
-
-  <!-- CURRENT EXERCISE -->
-
-  <div id="exercise">
-
-    Press Play
-
+  <div class="top">
+    <div class="move-name" id="moveName">Arms Circles</div>
+    <div class="move-desc" id="moveDesc">Extend arms out to the sides and draw small, controlled circles, gradually increasing the size.</div>
   </div>
 
+  <div class="sticky-controls">
+    <div class="phase-label work" id="phaseLabel">Work</div>
+    <div class="clock" id="clock">00:30</div>
+    <div class="line-track"><div class="line-fill" id="lineFill" style="width:100%"></div></div>
 
-  <!-- SOURCE -->
-
-  <div id="source">
-
-    Exercise demonstration
-
-  </div>
-
-
-  <!-- =====================================================
-       PERMANENT YOUTUBE PLAYER
-
-       It never opens another page.
-       It never becomes a button.
-       It remains inside this page.
-  ====================================================== -->
-
-  <div class="video-wrapper">
-
-    <div class="video-frame">
-
-      <div id="youtubePlayer"></div>
-
+    <div class="controls">
+      <button class="txt-btn" id="prevBtn">Previous</button>
+      <button class="play-btn work" id="playBtn" aria-label="Play or pause">
+        <svg id="playIcon" viewBox="0 0 24 24" fill="none"><path d="M8 5v14l12-7L8 5z" fill="currentColor"/></svg>
+      </button>
+      <button class="txt-btn" id="nextBtn">Next</button>
     </div>
-
+    <div class="reset-row">
+      <button class="txt-btn" id="resetBtn">Reset</button>
+    </div>
   </div>
 
-
-  <!-- TIMER -->
-
-  <div id="time">
-
-    00:00
-
+  <div class="video-wrap phase-work" id="videoWrap">
+    <iframe id="videoFrame" allow="autoplay; encrypted-media" allowfullscreen></iframe>
   </div>
 
-
-  <!-- TOTAL -->
-
-  <div id="totalLabel">
-
-    TOTAL ELAPSED
-
+  <div class="toggles-row">
+    <label class="simple-toggle">
+      <input type="checkbox" id="autoplayToggle" checked>
+      Auto-play video
+    </label>
+    <label class="simple-toggle">
+      <input type="checkbox" id="voiceToggle" checked>
+      Voice cues
+    </label>
   </div>
 
+  <div class="list-heading">Roadmap</div>
+  <div id="listContainer"></div>
 
-  <div id="totalTime">
+  <details class="settings">
+    <summary>Block timing <span>+</span></summary>
+    <div class="settings-body" id="settingsBody"></div>
+    <div class="hint">Work/rest is set per block, not per move. Changes apply to intervals you haven't reached yet.</div>
+  </details>
 
-    00:00
-
-  </div>
-
-
-  <!-- CONTROLS -->
-
-  <div class="controls">
-
-
-    <!-- PLAY / PAUSE -->
-
-    <button
-      id="playPauseButton"
-      onclick="togglePause()">
-
-      ▶
-
-    </button>
-
-
-    <!-- PREVIOUS -->
-
-    <button
-      onclick="previousMove()">
-
-      ‹
-
-    </button>
-
-
-    <!-- NEXT -->
-
-    <button
-      onclick="skipMove()">
-
-      ›
-
-    </button>
-
-
-    <!-- RESET -->
-
-    <button
-      onclick="resetTimer()">
-
-      ↻
-
-    </button>
-
-
-  </div>
-
-
-</main>
+  <footer>
+    Demo clips pulled from DAREBEE's Video Exercise Library.<br>
+    Full how-to library: <a href="https://darebee.com/library.html" target="_blank" rel="noopener">darebee.com/library.html</a>
+  </footer>
 
 </div>
 
-
-
-<!-- =========================================================
-     YOUTUBE IFRAME API
-========================================================= -->
-
-<script
-  src="https://www.youtube.com/iframe_api">
-</script>
-
-
-
 <script>
+(function(){
+  "use strict";
 
-/* =========================================================
-   EXERCISE DATABASE
+  const BLOCK_LABEL = { warmup:"Warm-up", main:"Main Set", cooldown:"Cool-down" };
 
-   APPROVED SOURCES:
+  const MOVES = [
+    { name:"Arms Circles",  videoId:"TBZilgJOzNE", block:"warmup",
+      desc:"Extend arms out to the sides and draw small, controlled circles, gradually increasing the size." },
+    { name:"Half Jacks",    videoId:"F16nHvGbsiw", block:"warmup",
+      desc:"Step one foot out while raising both arms overhead, then return — a lower-impact jumping jack." },
+    { name:"High Knees",    videoId:"mF_JmxPWIB0", block:"warmup",
+      desc:"Jog in place, driving your knees up toward hip height as fast as you can." },
+    { name:"Jumping Jacks", videoId:"jmbNjqtdo1Y", block:"warmup",
+      desc:"Jump your feet apart while raising your arms overhead, then jump back to start." },
+    { name:"Squats",        videoId:"Zqc_lc93hak", block:"main",
+      desc:"Feet shoulder-width apart, push your hips back and bend your knees until thighs are near parallel, then drive back up." },
+    { name:"Lunges",        videoId:"Q5MKMElLb4s", block:"main",
+      desc:"Step forward, lower until both knees are near 90°, then push back to standing and alternate legs." },
+    { name:"Push-Ups",      videoId:"n6NbTwfitRA", block:"main",
+      desc:"Hands under shoulders, lower your chest to the floor keeping your body straight, then press back up." },
+    { name:"Climbers",      videoId:"TXVKbYk9xRo", block:"main",
+      desc:"From a plank position, drive your knees alternately toward your chest at a quick pace." },
+    { name:"Burpees",       videoId:"mG0iaoLM2vc", block:"main",
+      desc:"Drop into a squat, kick back into a plank, return to squat, then jump up explosively." },
+    { name:"Glute Bridge",  videoId:"N48d7sm8dbU", block:"cooldown",
+      desc:"Lying on your back with knees bent, drive your hips up by squeezing your glutes, then lower slowly." },
+  ];
 
-   DAREBEE
-   DAREBEE
+  const DEFAULT_SETTINGS = {
+    warmup:   { work:30, rest:15 },
+    main:     { work:40, rest:20 },
+    cooldown: { work:40, rest:10 },
+  };
 
-   IMPORTANT:
-
-   The "youtube" field contains ONLY the
-   YouTube video ID.
-
-   The player automatically converts it
-   into an embedded player.
-
-========================================================= */
-
-
-const PLAYLISTS = [
-  { id: "PLQSMS0J6JbrKdSOSbyJXaQ_zN_HSSp7zZ", name: "DAREBEE Exercise Library" },
-  { id: "PLQSMS0J6JbrK9fA74RqpVHkzH14qvaPYH", name: "DAREBEE Workouts [FULL]" },
-  { id: "PLQSMS0J6JbrKcGgbOwIknlYcFv0vrHcI3", name: "DAREBEE Combat HIIT Program [FULL]" },
-  { id: "PLQSMS0J6JbrLUNzCgI3Sk32Kyio9rq0zA", name: "DAREBEE Workouts [How-To] [One Set]" }
-];
-
-// This is intentionally empty: every move is populated from ONLY the four
-// DAREBEE playlists above after the YouTube IFrame API becomes ready.
-let routine = [];
-
-const playlistVideos = [];
-let scrapePlaylistIndex = 0;
-let scrapeVideoIndex = 0;
-let scraping = false;
-let playlistLoading = false;
-let scrapeTimer = null;
-
-function normaliseTitle(title) {
-  return String(title || "")
-    .replace(/^DAREBEE\s*[-:]\s*/i, "")
-    .replace(/^Exercise Library\s*[:\-]\s*/i, "")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-function isUsableVideo(title) {
-  const t = normaliseTitle(title).toLowerCase();
-  if (!t) return false;
-
-  // Exclude obvious collection/program videos, not exercise names.
-  const reject = ["playlist", "program", "30 day", "60 day"];
-  return !reject.some(x => t.includes(x));
-}
-
-function addScrapedVideo(id, title, playlistName) {
-  const clean = normaliseTitle(title);
-  if (!id || !clean || !isUsableVideo(clean)) return;
-  if (routine.some(x => x.youtube === id)) return;
-
-  routine.push({
-    name: clean,
-    work: 30,
-    rest: 15,
-    source: "DAREBEE — " + playlistName,
-    youtube: id
-  });
-}
-
-function beginPlaylistScrape() {
-  if (!youtubeReady || !player || scraping) return;
-
-  scraping = true;
-  playlistLoading = false;
-  scrapePlaylistIndex = 0;
-  scrapeVideoIndex = 0;
-  playlistVideos.length = 0;
-  routine = [];
-
-  scrapeCurrentPlaylist();
-}
-
-function scrapeCurrentPlaylist() {
-  if (scrapePlaylistIndex >= PLAYLISTS.length) {
-    scrapePlaylistIndex = 0;
-    scrapeVideoIndex = 0;
-    scrapeNextVideoTitle();
-    return;
+  let blockSettings;
+  try{
+    const saved = JSON.parse(localStorage.getItem("dbTrainerSettings"));
+    blockSettings = saved && saved.warmup ? saved : JSON.parse(JSON.stringify(DEFAULT_SETTINGS));
+  }catch(e){
+    blockSettings = JSON.parse(JSON.stringify(DEFAULT_SETTINGS));
   }
 
-  playlistLoading = true;
-  const pl = PLAYLISTS[scrapePlaylistIndex];
+  const state = {
+    index: 0,
+    phase: "work",      // 'work' | 'rest' | 'done'
+    timeLeft: blockSettings[MOVES[0].block].work,
+    elapsedSec: 0,
+    playing: false,
+    voiceOn: true,
+    autoplayOn: true,
+    started: false,
+    timerId: null,
+    announceTimer: null,
+  };
 
-  try {
-    player.cuePlaylist({
-      listType: "playlist",
-      list: pl.id,
-      index: 0
+  // ---- element refs ----
+  const el = {
+    counter: document.getElementById("counter"),
+    elapsed: document.getElementById("elapsed"),
+    videoWrap: document.getElementById("videoWrap"),
+    videoFrame: document.getElementById("videoFrame"),
+    moveName: document.getElementById("moveName"),
+    moveDesc: document.getElementById("moveDesc"),
+    phaseLabel: document.getElementById("phaseLabel"),
+    clock: document.getElementById("clock"),
+    lineFill: document.getElementById("lineFill"),
+    playBtn: document.getElementById("playBtn"),
+    playIcon: document.getElementById("playIcon"),
+    prevBtn: document.getElementById("prevBtn"),
+    nextBtn: document.getElementById("nextBtn"),
+    resetBtn: document.getElementById("resetBtn"),
+    listContainer: document.getElementById("listContainer"),
+    voiceToggle: document.getElementById("voiceToggle"),
+    autoplayToggle: document.getElementById("autoplayToggle"),
+    settingsBody: document.getElementById("settingsBody"),
+  };
+
+  // ---- helpers ----
+  function currentMove(){ return MOVES[state.index]; }
+  function currentCfg(){ return blockSettings[currentMove().block]; }
+  function fmt(sec){
+    const m = Math.floor(sec/60).toString().padStart(2,"0");
+    const s = Math.max(0,sec % 60).toString().padStart(2,"0");
+    return `${m}:${s}`;
+  }
+
+  // ---- natural voice selection ----
+  let chosenVoice = null;
+  function pickVoice(){
+    if(!("speechSynthesis" in window)) return null;
+    const voices = window.speechSynthesis.getVoices();
+    if(!voices.length) return null;
+    const byName = (names) => voices.find(v => names.some(n => v.name.toLowerCase().includes(n)));
+    let v = byName(["natural","neural","premium","enhanced"]);
+    if(!v) v = byName(["google us english","samantha","ava","aria","jenny","zoe","nicky"]);
+    if(!v) v = voices.find(v => v.lang && v.lang.startsWith("en") && v.localService === false);
+    if(!v) v = voices.find(v => v.lang && v.lang.startsWith("en"));
+    return v || voices[0];
+  }
+  if("speechSynthesis" in window){
+    chosenVoice = pickVoice();
+    window.speechSynthesis.onvoiceschanged = () => { chosenVoice = pickVoice(); };
+  }
+
+  function speak(text){
+    if(!state.voiceOn) return;
+    if(!("speechSynthesis" in window)) return;
+    try{
+      const u = new SpeechSynthesisUtterance(text);
+      if(chosenVoice) u.voice = chosenVoice;
+      u.rate = 0.98;
+      u.pitch = 1;
+      window.speechSynthesis.speak(u);
+    }catch(e){ /* ignore */ }
+  }
+
+  function loadVideo(){
+    const id = currentMove().videoId;
+    const auto = state.autoplayOn ? 1 : 0;
+    const mute = state.autoplayOn ? 1 : 0;
+    el.videoFrame.src = `https://www.youtube.com/embed/${id}?controls=1&showinfo=0&rel=0&autoplay=${auto}&loop=1&mute=${mute}&playlist=${id}`;
+  }
+
+  function announceStart(){
+    speak(`Start ${currentMove().name}`);
+  }
+
+  function announceStartDebounced(){
+    if(state.announceTimer) clearTimeout(state.announceTimer);
+    if("speechSynthesis" in window) window.speechSynthesis.cancel();
+    const idxAtSchedule = state.index;
+    state.announceTimer = setTimeout(() => {
+      if(state.index === idxAtSchedule) announceStart();
+    }, 380);
+  }
+
+  // ---- rendering ----
+  function render(){
+    const move = currentMove();
+    const cfg = currentCfg();
+    const nextMv = MOVES[state.index+1];
+
+    el.counter.textContent = state.phase === "done" ? "Complete" : `Move ${state.index+1} / ${MOVES.length}`;
+    el.elapsed.textContent = fmt(state.elapsedSec);
+
+    const phase = state.phase === "rest" ? "rest" : "work";
+
+    if(state.phase === "done"){
+      el.moveName.textContent = "Workout complete";
+      el.moveDesc.textContent = "Nice work — session finished.";
+    }else if(phase === "work"){
+      el.moveName.textContent = move.name;
+      el.moveDesc.textContent = move.desc;
+    }else{
+      el.moveName.textContent = "Rest";
+      el.moveDesc.textContent = nextMv ? `Next: ${nextMv.name}` : "Almost done";
+    }
+
+    el.videoWrap.classList.toggle("phase-work", phase==="work");
+    el.videoWrap.classList.toggle("phase-rest", phase==="rest");
+    el.phaseLabel.textContent = state.phase === "done" ? "Done" : (phase === "work" ? "Work" : "Rest");
+    el.phaseLabel.className = "phase-label " + (state.phase === "done" ? "" : phase);
+
+    el.clock.textContent = state.phase === "done" ? "00:00" : fmt(state.timeLeft);
+    const total = state.phase === "rest" ? cfg.rest : cfg.work;
+    const pct = state.phase === "done" ? 0 : Math.max(0, Math.min(100, (state.timeLeft/Math.max(total,1))*100));
+    el.lineFill.style.width = pct + "%";
+    el.lineFill.classList.toggle("rest", phase==="rest");
+
+    el.playBtn.classList.toggle("work", phase==="work");
+    el.playBtn.classList.toggle("rest", phase==="rest");
+    el.playIcon.innerHTML = state.playing
+      ? '<rect x="6" y="5" width="4" height="14" fill="currentColor"/><rect x="14" y="5" width="4" height="14" fill="currentColor"/>'
+      : '<path d="M8 5v14l12-7L8 5z" fill="currentColor"/>';
+
+    renderList();
+  }
+
+  function renderList(){
+    el.listContainer.innerHTML = "";
+    let lastBlock = null;
+    MOVES.forEach((m, i) => {
+      if(m.block !== lastBlock){
+        lastBlock = m.block;
+        const groupHeading = document.createElement("div");
+        groupHeading.className = "block-title";
+        groupHeading.textContent = BLOCK_LABEL[m.block];
+        el.listContainer.appendChild(groupHeading);
+      }
+
+      const isDone = i < state.index;
+      const isCurrent = i === state.index;
+
+      const row = document.createElement("div");
+      row.className = "move-row" + (isCurrent ? " current" : "") + (isDone ? " done" : "");
+      row.addEventListener("click", () => goToIndex(i));
+
+      const mark = document.createElement("div");
+      mark.className = "row-mark";
+      mark.textContent = isDone ? "✓" : isCurrent ? "▶" : (i+1);
+
+      const name = document.createElement("div");
+      name.className = "row-name";
+      name.textContent = m.name;
+
+      row.appendChild(mark);
+      row.appendChild(name);
+      el.listContainer.appendChild(row);
     });
-  } catch (e) {
-    console.error("Could not load DAREBEE playlist:", pl.id, e);
-    playlistLoading = false;
-    scrapePlaylistIndex++;
-    setTimeout(scrapeCurrentPlaylist, 250);
-  }
-}
-
-function collectCurrentPlaylistIds() {
-  if (!playlistLoading) return;
-
-  const ids = player.getPlaylist ? player.getPlaylist() : [];
-  if (!ids || !ids.length) {
-    setTimeout(collectCurrentPlaylistIds, 1000);
-    return;
   }
 
-  playlistLoading = false;
-  playlistVideos.push({
-    playlist: PLAYLISTS[scrapePlaylistIndex],
-    ids: ids.slice()
-  });
-
-  scrapePlaylistIndex++;
-  setTimeout(scrapeCurrentPlaylist, 300);
-}
-
-function scrapeNextVideoTitle() {
-  if (scrapePlaylistIndex >= playlistVideos.length) {
-    finishPlaylistScrape();
-    return;
-  }
-
-  const group = playlistVideos[scrapePlaylistIndex];
-
-  if (scrapeVideoIndex >= group.ids.length) {
-    scrapePlaylistIndex++;
-    scrapeVideoIndex = 0;
-    scrapeNextVideoTitle();
-    return;
-  }
-
-  const videoId = group.ids[scrapeVideoIndex];
-  clearTimeout(scrapeTimer);
-
-  try {
-    player.cueVideoById(videoId);
-  } catch (e) {
-    scrapeVideoIndex++;
-    setTimeout(scrapeNextVideoTitle, 250);
-    return;
-  }
-
-  scrapeTimer = setTimeout(() => {
-    const data = player.getVideoData ? player.getVideoData() : null;
-    addScrapedVideo(videoId, data && data.title, group.playlist.name);
-    scrapeVideoIndex++;
-    scrapeNextVideoTitle();
-  }, 800);
-}
-
-function finishPlaylistScrape() {
-  scraping = false;
-  playlistLoading = false;
-  clearTimeout(scrapeTimer);
-
-  if (!routine.length) {
-    exerciseElement.textContent = "No DAREBEE moves could be loaded";
-    sourceElement.textContent = "The four approved YouTube playlists returned no usable videos.";
-    return;
-  }
-
-  idx = 0;
-  phase = "prepare";
-  timeLeft = 0;
-  elapsedSeconds = 0;
-  paused = false;
-  workoutStarted = false;
-
-  buildRoutineList();
-  loadVideo();
-  updateDisplay();
-  sourceElement.textContent =
-    "DAREBEE — " + routine.length + " moves loaded from the four approved playlists";
-}
-
-
-
-/* =========================================================
-   STATE
-========================================================= */
-
-let idx = 0;
-
-let phase = "prepare";
-
-let timeLeft = 0;
-
-let elapsedSeconds = 0;
-
-let timer = null;
-
-let paused = false;
-
-let workoutStarted = false;
-
-
-/*
-   YouTube player instance
-*/
-
-let player = null;
-
-let youtubeReady = false;
-
-
-
-/* =========================================================
-   DOM ELEMENTS
-========================================================= */
-
-const exerciseElement =
-  document.getElementById(
-    "exercise"
-  );
-
-
-const sourceElement =
-  document.getElementById(
-    "source"
-  );
-
-
-const timeElement =
-  document.getElementById(
-    "time"
-  );
-
-
-const totalTimeElement =
-  document.getElementById(
-    "totalTime"
-  );
-
-
-const routineList =
-  document.getElementById(
-    "routineList"
-  );
-
-
-const playPauseButton =
-  document.getElementById(
-    "playPauseButton"
-  );
-
-
-
-/* =========================================================
-   YOUTUBE API
-
-   YouTube calls this automatically.
-========================================================= */
-
-function onYouTubeIframeAPIReady() {
-  player = new YT.Player("youtubePlayer", {
-    videoId: "xMtCZE6rEiA",
-    playerVars: {
-      playsinline: 1,
-      rel: 0,
-      origin: window.location.origin
-    },
-    events: {
-      onReady: onPlayerReady,
-      onStateChange: onPlayerStateChange,
-      onError: onPlayerError
-    }
-  });
-}
-
-
-
-/* =========================================================
-   PLAYER READY
-========================================================= */
-
-function onPlayerReady() {
-  youtubeReady = true;
-  setTimeout(beginPlaylistScrape, 800);
-}
-
-
-
-function onPlayerStateChange(event) {
-  if (event.data === YT.PlayerState.CUED && scraping && playlistLoading) {
-    collectCurrentPlaylistIds();
-  }
-}
-
-
-/* =========================================================
-   PLAYER ERROR
-========================================================= */
-
-function onPlayerError(event) {
-
-  console.log(
-    "YouTube player error:",
-    event.data
-  );
-
-}
-
-
-
-/* =========================================================
-   LOAD VIDEO
-========================================================= */
-
-function loadVideo() {
-
-
-  if (
-    !youtubeReady ||
-    !player
-  ) {
-
-    return;
-
-  }
-
-
-  const exercise =
-    routine[idx];
-
-
-  if (!exercise)
-    return;
-
-
-  /*
-     SAME PLAYER.
-
-     We do NOT create another iframe.
-
-     We do NOT open YouTube.
-
-     We only change the video.
-  */
-
-  player.cueVideoById(
-    exercise.youtube
-  );
-
-}
-
-
-
-/* =========================================================
-   SPEECH
-========================================================= */
-
-function speak(text) {
-
-  window.speechSynthesis.cancel();
-
-
-  const msg =
-    new SpeechSynthesisUtterance(
-      text
-    );
-
-
-  msg.rate = 0.9;
-
-
-  window.speechSynthesis.speak(
-    msg
-  );
-
-}
-
-
-
-/* =========================================================
-   FORMAT TIME
-========================================================= */
-
-function formatTime(seconds) {
-
-  const minutes =
-    Math.floor(
-      seconds / 60
-    );
-
-
-  const secs =
-    seconds % 60;
-
-
-  return (
-
-    String(minutes)
-      .padStart(2, "0")
-
-    +
-
-    ":"
-
-    +
-
-    String(secs)
-      .padStart(2, "0")
-
-  );
-
-}
-
-
-
-/* =========================================================
-   BUILD ROADMAP
-========================================================= */
-
-function buildRoutineList() {
-
-  routineList.innerHTML = "";
-
-
-  routine.forEach(
-    (exercise, i) => {
-
-
-      const item =
-        document.createElement(
-          "div"
-        );
-
-
-      item.className =
-        "exercise-item pending";
-
-
-      item.id =
-        "exercise-" + i;
-
-
-      item.innerHTML = `
-
-        <span class="status">
-          ○
-        </span>
-
-        <span>
-          ${exercise.name}
-        </span>
-
-        <div class="progress-container">
-
-          <div
-            class="progress-bar"
-            id="progress-${i}">
+  function renderSettings(){
+    el.settingsBody.innerHTML = "";
+    Object.keys(BLOCK_LABEL).forEach(block => {
+      const wrap = document.createElement("div");
+      wrap.className = "block-setting";
+      wrap.innerHTML = `
+        <div class="block-setting-title">${BLOCK_LABEL[block]}</div>
+        <div class="field-row">
+          <div class="field">
+            <label>Work (sec)</label>
+            <input type="number" min="5" max="180" step="5" value="${blockSettings[block].work}" data-block="${block}" data-kind="work">
           </div>
-
+          <div class="field">
+            <label>Rest (sec)</label>
+            <input type="number" min="0" max="120" step="5" value="${blockSettings[block].rest}" data-block="${block}" data-kind="rest">
+          </div>
         </div>
-
       `;
-
-
-      /*
-         Clicking an exercise in
-         the roadmap immediately
-         loads its video.
-
-         It remains inside this page.
-      */
-
-      item.addEventListener(
-        "click",
-        () => {
-
-          selectExercise(i);
-
-        }
-      );
-
-
-      routineList.appendChild(
-        item
-      );
-
-    }
-  );
-
-
-  updateRoutineList();
-
-}
-
-
-
-/* =========================================================
-   SELECT EXERCISE FROM ROADMAP
-========================================================= */
-
-function selectExercise(newIndex) {
-
-
-  clearInterval(timer);
-
-
-  window.speechSynthesis.cancel();
-
-
-  idx =
-    newIndex;
-
-
-  phase =
-    "work";
-
-
-  timeLeft =
-    routine[idx].work;
-
-
-  workoutStarted =
-    true;
-
-
-  paused =
-    true;
-
-
-  playPauseButton.textContent =
-    "▶";
-
-
-  /*
-     Change video in SAME player.
-  */
-
-  loadVideo();
-
-
-  updateDisplay();
-
-}
-
-
-
-/* =========================================================
-   UPDATE ROADMAP
-========================================================= */
-
-function updateRoutineList() {
-
-
-  routine.forEach(
-    (exercise, i) => {
-
-
-      const item =
-        document.getElementById(
-          "exercise-" + i
-        );
-
-
-      if (!item)
-        return;
-
-
-      const progress =
-        document.getElementById(
-          "progress-" + i
-        );
-
-
-      const status =
-        item.querySelector(
-          ".status"
-        );
-
-
-      item.classList.remove(
-        "active",
-        "completed",
-        "pending"
-      );
-
-
-      /* -----------------------------------------------
-         COMPLETED
-      ------------------------------------------------ */
-
-      if (i < idx) {
-
-
-        item.classList.add(
-          "completed"
-        );
-
-
-        status.textContent =
-          "✓";
-
-
-        progress.style.width =
-          "100%";
-
+      el.settingsBody.appendChild(wrap);
+    });
+
+    el.settingsBody.querySelectorAll("input").forEach(input => {
+      input.addEventListener("change", () => {
+        const block = input.dataset.block;
+        const kind = input.dataset.kind;
+        let val = parseInt(input.value, 10);
+        if(isNaN(val) || val < 0) val = 0;
+        blockSettings[block][kind] = val;
+        localStorage.setItem("dbTrainerSettings", JSON.stringify(blockSettings));
+        render();
+      });
+    });
+  }
+
+  // ---- timer engine ----
+  function tick(){
+    state.timeLeft -= 1;
+    state.elapsedSec += 1;
+    const cfg = currentCfg();
+
+    if(state.phase === "work"){
+      if(state.timeLeft === 15){
+        speak("15 seconds left");
       }
-
-
-      /* -----------------------------------------------
-         CURRENT
-      ------------------------------------------------ */
-
-      else if (i === idx) {
-
-
-        item.classList.add(
-          "active"
-        );
-
-
-        status.textContent =
-          "●";
-
-
-        if (
-          phase === "work" &&
-          routine[idx].work > 0
-        ) {
-
-
-          const completed =
-            routine[idx].work -
-            timeLeft;
-
-
-          const percentage =
-
-            Math.min(
-              100,
-
-              Math.max(
-                0,
-
-                completed /
-                routine[idx].work *
-                100
-              )
-
-            );
-
-
-          progress.style.width =
-            percentage + "%";
-
-        }
-
-        else {
-
-          progress.style.width =
-            "0%";
-
-        }
-
-
-        item.scrollIntoView({
-
-          behavior: "smooth",
-
-          block: "center"
-
-        });
-
+      if(cfg.rest === 0 && state.timeLeft === 5 && state.index < MOVES.length - 1){
+        speak(`Next is ${MOVES[state.index+1].name}`);
       }
-
-
-      /* -----------------------------------------------
-         PENDING
-      ------------------------------------------------ */
-
-      else {
-
-
-        item.classList.add(
-          "pending"
-        );
-
-
-        status.textContent =
-          "○";
-
-
-        progress.style.width =
-          "0%";
-
+      if(state.timeLeft === 3 || state.timeLeft === 2 || state.timeLeft === 1){
+        speak(String(state.timeLeft));
       }
-
-    }
-  );
-
-}
-
-
-
-/* =========================================================
-   UPDATE MAIN DISPLAY
-========================================================= */
-
-function updateDisplay() {
-
-
-  const ex =
-    routine[idx];
-
-
-  if (!ex)
-    return;
-
-
-  /* -----------------------------------------------
-     PREPARE
-  ------------------------------------------------ */
-
-  if (
-    phase === "prepare"
-  ) {
-
-
-    exerciseElement.textContent =
-
-      "Prepare for " +
-
-      ex.name +
-
-      " (" +
-
-      (idx + 1) +
-
-      "/" +
-
-      routine.length +
-
-      ")";
-
-  }
-
-
-  /* -----------------------------------------------
-     WORK
-  ------------------------------------------------ */
-
-  else if (
-    phase === "work"
-  ) {
-
-
-    exerciseElement.textContent =
-
-      ex.name +
-
-      " (" +
-
-      (idx + 1) +
-
-      "/" +
-
-      routine.length +
-
-      ")";
-
-  }
-
-
-  /* -----------------------------------------------
-     REST
-  ------------------------------------------------ */
-
-  else if (
-    phase === "rest"
-  ) {
-
-
-    exerciseElement.textContent =
-
-      "Rest — Next: " +
-
-      (
-
-        routine[idx + 1]
-
-          ? routine[idx + 1].name
-
-          : "Workout Complete"
-
-      );
-
-  }
-
-
-  /*
-     Always show source.
-  */
-
-  sourceElement.textContent =
-
-    "How to: " +
-
-    ex.source;
-
-
-  timeElement.textContent =
-    formatTime(
-      timeLeft
-    );
-
-
-  totalTimeElement.textContent =
-    formatTime(
-      elapsedSeconds
-    );
-
-
-  updateRoutineList();
-
-}
-
-
-
-/* =========================================================
-   START WORKOUT
-========================================================= */
-
-function startTimer() {
-
-  if (!routine.length) return;
-
-  clearInterval(timer);
-
-
-  idx = 0;
-
-  phase = "prepare";
-
-  paused = false;
-
-  workoutStarted = true;
-
-  elapsedSeconds = 0;
-
-  timeLeft = 5;
-
-
-  playPauseButton.textContent =
-    "❚❚";
-
-
-  loadVideo();
-
-
-  updateDisplay();
-
-
-  speak(
-
-    "Prepare for " +
-
-    routine[0].name
-
-  );
-
-
-  timer =
-    setInterval(
-      tick,
-      1000
-    );
-
-}
-
-
-
-/* =========================================================
-   PLAY / PAUSE
-========================================================= */
-
-function togglePause() {
-
-
-  /*
-     First press starts workout.
-  */
-
-  if (
-    !workoutStarted
-  ) {
-
-    startTimer();
-
-    return;
-
-  }
-
-
-  paused =
-    !paused;
-
-
-  if (paused) {
-
-
-    playPauseButton.textContent =
-      "▶";
-
-
-    window.speechSynthesis.cancel();
-
-  }
-
-  else {
-
-
-    playPauseButton.textContent =
-      "❚❚";
-
-  }
-
-}
-
-
-
-/* =========================================================
-   NEXT
-========================================================= */
-
-function skipMove() {
-
-
-  if (
-    !workoutStarted
-  )
-    return;
-
-
-  clearInterval(timer);
-
-
-  window.speechSynthesis.cancel();
-
-
-  idx++;
-
-
-  if (
-    idx >= routine.length
-  ) {
-
-
-    finishWorkout();
-
-    return;
-
-  }
-
-
-  phase =
-    "work";
-
-
-  timeLeft =
-    routine[idx].work;
-
-
-  paused =
-    false;
-
-
-  playPauseButton.textContent =
-    "❚❚";
-
-
-  /*
-     SAME YouTube player.
-  */
-
-  loadVideo();
-
-
-  updateDisplay();
-
-
-  speak(
-
-    "Start " +
-
-    routine[idx].name
-
-  );
-
-
-  timer =
-    setInterval(
-      tick,
-      1000
-    );
-
-}
-
-
-
-/* =========================================================
-   PREVIOUS
-========================================================= */
-
-function previousMove() {
-
-
-  if (
-    !workoutStarted
-  )
-    return;
-
-
-  clearInterval(timer);
-
-
-  window.speechSynthesis.cancel();
-
-
-  if (
-    idx <= 0
-  ) {
-
-
-    idx = 0;
-
-    phase =
-      "prepare";
-
-    timeLeft =
-      5;
-
-
-    loadVideo();
-
-
-    updateDisplay();
-
-
-    timer =
-      setInterval(
-        tick,
-        1000
-      );
-
-
-    return;
-
-  }
-
-
-  idx--;
-
-
-  phase =
-    "work";
-
-
-  timeLeft =
-    routine[idx].work;
-
-
-  paused =
-    false;
-
-
-  playPauseButton.textContent =
-    "❚❚";
-
-
-  loadVideo();
-
-
-  updateDisplay();
-
-
-  speak(
-
-    "Start " +
-
-    routine[idx].name
-
-  );
-
-
-  timer =
-    setInterval(
-      tick,
-      1000
-    );
-
-}
-
-
-
-/* =========================================================
-   RESET
-========================================================= */
-
-function resetTimer() {
-
-
-  clearInterval(timer);
-
-
-  window.speechSynthesis.cancel();
-
-
-  idx = 0;
-
-  phase = "prepare";
-
-  timeLeft = 0;
-
-  elapsedSeconds = 0;
-
-  paused = false;
-
-  workoutStarted = false;
-
-
-  playPauseButton.textContent =
-    "▶";
-
-
-  exerciseElement.textContent =
-    "Press Play";
-
-
-  sourceElement.textContent =
-    routine.length ? "DAREBEE exercise demonstration" : "Loading DAREBEE playlists…";
-
-
-  timeElement.textContent =
-    "00:00";
-
-
-  totalTimeElement.textContent =
-    "00:00";
-
-
-  /*
-     Return player to first
-     exercise.
-  */
-
-  loadVideo();
-
-
-  updateRoutineList();
-
-}
-
-
-
-/* =========================================================
-   TIMER TICK
-========================================================= */
-
-function tick() {
-
-
-  if (paused)
-    return;
-
-
-  elapsedSeconds++;
-
-
-  if (
-    timeLeft > 0
-  ) {
-
-    timeLeft--;
-
-  }
-
-
-  /* -----------------------------------------------
-     PREPARE COUNTDOWN
-  ------------------------------------------------ */
-
-  if (
-
-    phase === "prepare" &&
-
-    timeLeft <= 3 &&
-
-    timeLeft > 0
-
-  ) {
-
-    speak(
-      timeLeft.toString()
-    );
-
-  }
-
-
-  if (
-
-    phase === "prepare" &&
-
-    timeLeft === 0
-
-  ) {
-
-    nextPhase();
-
-    return;
-
-  }
-
-
-  /* -----------------------------------------------
-     WORK
-  ------------------------------------------------ */
-
-  if (
-
-    phase === "work" &&
-
-    timeLeft === 10
-
-  ) {
-
-    speak(
-      "10 seconds left"
-    );
-
-  }
-
-
-  if (
-
-    phase === "work" &&
-
-    timeLeft <= 3 &&
-
-    timeLeft > 0
-
-  ) {
-
-    speak(
-      timeLeft.toString()
-    );
-
-  }
-
-
-  if (
-
-    phase === "work" &&
-
-    timeLeft === 0
-
-  ) {
-
-    nextPhase();
-
-    return;
-
-  }
-
-
-  /* -----------------------------------------------
-     REST
-  ------------------------------------------------ */
-
-  if (
-
-    phase === "rest" &&
-
-    timeLeft <= 3 &&
-
-    timeLeft > 0
-
-  ) {
-
-    speak(
-      timeLeft.toString()
-    );
-
-  }
-
-
-  if (
-
-    phase === "rest" &&
-
-    timeLeft === 0
-
-  ) {
-
-    nextPhase();
-
-    return;
-
-  }
-
-
-  updateDisplay();
-
-}
-
-
-
-/* =========================================================
-   NEXT PHASE
-========================================================= */
-
-function nextPhase() {
-
-
-  /* -----------------------------------------------
-     PREPARE → WORK
-  ------------------------------------------------ */
-
-  if (
-    phase === "prepare"
-  ) {
-
-
-    phase =
-      "work";
-
-
-    timeLeft =
-      routine[idx].work;
-
-
-    updateDisplay();
-
-
-    speak(
-
-      "Start " +
-
-      routine[idx].name
-
-    );
-
-
-    return;
-
-  }
-
-
-  /* -----------------------------------------------
-     WORK → REST
-  ------------------------------------------------ */
-
-  if (
-    phase === "work"
-  ) {
-
-
-    const ex =
-      routine[idx];
-
-
-    if (
-      ex.rest === 0
-    ) {
-
-
-      goToNextExercise();
-
-      return;
-
-    }
-
-
-    phase =
-      "rest";
-
-
-    timeLeft =
-      ex.rest;
-
-
-    updateDisplay();
-
-
-    speak("Rest");
-
-
-    /*
-       Tell user the next exercise.
-    */
-
-    if (
-      idx + 1 <
-      routine.length
-    ) {
-
-
-      setTimeout(
-        () => {
-
-
-          if (
-
-            phase === "rest" &&
-
-            !paused
-
-          ) {
-
-
-            speak(
-
-              "Next exercise is " +
-
-              routine[
-                idx + 1
-              ].name
-
-            );
-
+      if(state.timeLeft <= 0){
+        if(cfg.rest > 0){
+          state.phase = "rest";
+          state.timeLeft = cfg.rest;
+          if(state.index < MOVES.length - 1){
+            speak(`Next is ${MOVES[state.index+1].name}`);
           }
-
-        },
-
-        2000
-
-      );
-
+        }else{
+          advanceMove();
+        }
+      }
+    }else if(state.phase === "rest"){
+      if(state.timeLeft === 3 || state.timeLeft === 2 || state.timeLeft === 1){
+        speak(String(state.timeLeft));
+      }
+      if(state.timeLeft <= 0){
+        advanceMove();
+      }
     }
-
-
-    return;
-
+    render();
   }
 
-
-  /* -----------------------------------------------
-     REST → NEXT
-  ------------------------------------------------ */
-
-  if (
-    phase === "rest"
-  ) {
-
-
-    goToNextExercise();
-
+  function advanceMove(){
+    if(state.index >= MOVES.length - 1){
+      finishWorkout();
+      return;
+    }
+    state.index += 1;
+    state.phase = "work";
+    state.timeLeft = currentCfg().work;
+    loadVideo();
+    announceStart();
   }
 
-}
-
-
-
-/* =========================================================
-   NEXT EXERCISE
-========================================================= */
-
-function goToNextExercise() {
-
-
-  idx++;
-
-
-  if (
-    idx >= routine.length
-  ) {
-
-
-    finishWorkout();
-
-    return;
-
+  function finishWorkout(){
+    state.phase = "done";
+    state.playing = false;
+    clearInterval(state.timerId);
+    speak("Workout complete. Great work.");
+    render();
   }
 
+  function play(){
+    if(state.phase === "done") return;
+    if(state.playing) return;
+    state.playing = true;
+    if(!state.started){
+      state.started = true;
+      loadVideo();
+      announceStart();
+    }
+    state.timerId = setInterval(tick, 1000);
+    render();
+  }
 
-  phase =
-    "work";
+  function pause(){
+    state.playing = false;
+    clearInterval(state.timerId);
+    render();
+  }
 
+  function togglePlay(){
+    state.playing ? pause() : play();
+  }
 
-  timeLeft =
-    routine[idx].work;
+  function goToIndex(i){
+    pause();
+    state.index = i;
+    state.phase = "work";
+    state.timeLeft = currentCfg().work;
+    state.started = true;
+    loadVideo();
+    announceStartDebounced();
+    render();
+  }
 
+  function nextMove(){
+    if(state.index < MOVES.length - 1) goToIndex(state.index + 1);
+  }
+  function prevMove(){
+    if(state.index > 0) goToIndex(state.index - 1);
+  }
 
-  /*
-     Change video.
+  function reset(){
+    pause();
+    if(state.announceTimer) clearTimeout(state.announceTimer);
+    if("speechSynthesis" in window) window.speechSynthesis.cancel();
+    state.index = 0;
+    state.phase = "work";
+    state.timeLeft = currentCfg().work;
+    state.elapsedSec = 0;
+    state.started = false;
+    loadVideo();
+    render();
+  }
 
-     SAME PLAYER.
-  */
+  // ---- wire up ----
+  el.playBtn.addEventListener("click", togglePlay);
+  el.nextBtn.addEventListener("click", nextMove);
+  el.prevBtn.addEventListener("click", prevMove);
+  el.resetBtn.addEventListener("click", reset);
+  el.voiceToggle.addEventListener("change", (e) => {
+    state.voiceOn = e.target.checked;
+    if(!state.voiceOn && "speechSynthesis" in window) window.speechSynthesis.cancel();
+  });
+  el.autoplayToggle.addEventListener("change", (e) => {
+    state.autoplayOn = e.target.checked;
+    loadVideo();
+  });
 
+  // ---- init ----
   loadVideo();
+  renderSettings();
+  render();
 
-
-  updateDisplay();
-
-
-  speak(
-
-    "Start " +
-
-    routine[idx].name
-
-  );
-
-}
-
-
-
-/* =========================================================
-   FINISH
-========================================================= */
-
-function finishWorkout() {
-
-
-  clearInterval(timer);
-
-
-  window.speechSynthesis.cancel();
-
-
-  workoutStarted =
-    false;
-
-
-  paused =
-    false;
-
-
-  playPauseButton.textContent =
-    "▶";
-
-
-  exerciseElement.textContent =
-    "Workout Complete!";
-
-
-  sourceElement.textContent =
-    "";
-
-
-  timeElement.textContent =
-    "00:00";
-
-
-  totalTimeElement.textContent =
-    formatTime(
-      elapsedSeconds
-    );
-
-
-  /*
-     Mark every exercise complete.
-  */
-
-  routine.forEach(
-    (exercise, i) => {
-
-
-      const item =
-        document.getElementById(
-          "exercise-" + i
-        );
-
-
-      if (!item)
-        return;
-
-
-      const status =
-        item.querySelector(
-          ".status"
-        );
-
-
-      const progress =
-        document.getElementById(
-          "progress-" + i
-        );
-
-
-      item.classList.remove(
-        "active",
-        "pending"
-      );
-
-
-      item.classList.add(
-        "completed"
-      );
-
-
-      status.textContent =
-        "✓";
-
-
-      progress.style.width =
-        "100%";
-
-    }
-  );
-
-
-  speak(
-    "Workout complete"
-  );
-
-}
-
-
-
-/* =========================================================
-   INITIALIZE
-========================================================= */
-
-buildRoutineList();
-
+})();
 </script>
-
 </body>
-
 </html>
